@@ -3,9 +3,9 @@
   var segments = location.pathname.split('/').filter(Boolean);
   var page = segments[segments.length - 1] || 'index.html';
   var links = [
-    { href: '/index.html',  label: 'Posts',  match: 'index.html'  },
-    { href: '/search.html', label: 'Search', match: 'search.html' },
-    { href: '/about.html',  label: 'About Me', match: 'about.html'  }
+    { href: '/index.html',    label: 'Home',     match: 'index.html'    },
+    { href: '/posts.html',    label: 'Posts',    match: 'posts.html'    },
+    { href: '/projects.html', label: 'Projects', match: 'projects.html' }
   ];
   var navLinks = links.map(function (l) {
     return '<a href="' + l.href + '"' + (page === l.match ? ' class="active"' : '') + '>' + l.label + '</a>';
@@ -38,23 +38,48 @@ document.getElementById('theme-toggle').addEventListener('click', function () {
     'share-twitter':  'https://twitter.com/intent/tweet?url=' + url + '&text=' + title,
     'share-linkedin': 'https://www.linkedin.com/sharing/share-offsite/?url=' + url,
     'share-reddit':   'https://reddit.com/submit?url=' + url + '&title=' + title,
-    'share-facebook': 'https://www.facebook.com/sharer/sharer.php?u=' + url,
-    'share-whatsapp': 'https://wa.me/?text=' + title + '%20' + url,
-    'share-telegram': 'https://t.me/share/url?url=' + url + '&text=' + title
+    'share-facebook': 'https://www.facebook.com/sharer/sharer.php?u=' + url
   };
   Object.keys(map).forEach(function (id) {
     var el = document.getElementById(id);
     if (el) el.href = map[id];
   });
+
+  // Copy link / native share button
+  var copyBtn = document.getElementById('share-copy');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var pageUrl = window.location.href;
+      if (navigator.share) {
+        navigator.share({ title: document.title, url: pageUrl });
+      } else {
+        navigator.clipboard.writeText(pageUrl).then(function () {
+          copyBtn.title = 'Copied!';
+          copyBtn.style.color = 'var(--accent)';
+          copyBtn.style.borderColor = 'var(--accent)';
+          setTimeout(function () {
+            copyBtn.title = 'Copy link';
+            copyBtn.style.color = '';
+            copyBtn.style.borderColor = '';
+          }, 2000);
+        });
+      }
+    });
+  }
 }());
 
-// Reading time
-var postBody = document.querySelector('.post-body');
-var readingTimeEl = document.getElementById('reading-time');
-if (postBody && readingTimeEl) {
-  var words = postBody.textContent.trim().split(/\s+/).length;
-  var minutes = Math.max(1, Math.round(words / 200));
-  readingTimeEl.textContent = minutes + ' min read';
+// Mobile TOC toggle
+var tocToggle = document.getElementById('toc-toggle');
+var tocPanel = document.getElementById('toc-panel');
+if (tocToggle && tocPanel) {
+  tocToggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    tocPanel.classList.toggle('open');
+  });
+  tocPanel.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { tocPanel.classList.remove('open'); });
+  });
+  document.addEventListener('click', function () { tocPanel.classList.remove('open'); });
 }
 
 // KaTeX auto-render

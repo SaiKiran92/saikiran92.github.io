@@ -88,6 +88,103 @@ nav {
   padding: 2.5rem 1.5rem 5rem;
 }
 
+/* Post page: sidebar TOC + main content */
+.post-layout {
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.post-main {
+  flex: 1;
+  min-width: 0;
+  max-width: var(--max);
+}
+
+.toc-sidebar {
+  width: 190px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 80px;
+}
+
+.toc-sidebar-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc-sidebar ul { list-style: none; padding: 0; }
+.toc-sidebar li { margin: 0.35rem 0; }
+.toc-sidebar a { color: var(--muted); text-decoration: none; font-size: 0.82rem; line-height: 1.5; display: block; }
+.toc-sidebar a:hover { color: var(--accent); }
+
+/* On wide screens: show sidebar, hide mobile TOC */
+@media (min-width: 1080px) {
+  .toc-mobile { display: none; }
+}
+
+/* On narrow screens: hide sidebar, show mobile TOC button */
+@media (max-width: 1079px) {
+  .toc-sidebar { display: none; }
+  .post-layout { max-width: var(--max); }
+
+  .toc-mobile-btn {
+    position: fixed;
+    top: 72px;
+    left: 12px;
+    z-index: 40;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.35rem 0.45rem;
+    cursor: pointer;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+  }
+  .toc-mobile-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .toc-mobile-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+  .toc-mobile-panel {
+    display: none;
+    position: fixed;
+    top: 112px;
+    left: 12px;
+    z-index: 40;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    min-width: 210px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    font-size: 0.85rem;
+  }
+  .toc-mobile-panel.open { display: block; }
+  .toc-mobile-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-mobile-panel ul { list-style: none; padding: 0; }
+  .toc-mobile-panel li { margin: 0.35rem 0; }
+  .toc-mobile-panel a { color: var(--muted); text-decoration: none; display: block; line-height: 1.5; }
+  .toc-mobile-panel a:hover { color: var(--accent); }
+}
+
 .content h1 {
   font-size: 1.6rem;
   font-weight: 600;
@@ -100,18 +197,6 @@ nav {
 .post-header { margin-bottom: 2rem; }
 .post-title { font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.6rem; letter-spacing: -0.02em; }
 .post-meta { font-size: 0.85rem; color: var(--muted); }
-
-.toc {
-  border-left: 3px solid var(--accent);
-  padding: 0.75rem 1rem;
-  margin-bottom: 2rem;
-  font-size: 0.88rem;
-}
-.toc summary { cursor: pointer; font-weight: 600; }
-.toc ul { margin-top: 0.6rem; padding-left: 1.2rem; }
-.toc li { margin: 0.3rem 0; }
-.toc a { color: var(--muted); text-decoration: none; }
-.toc a:hover { color: var(--accent); }
 
 .post-body {
   font-family: Georgia, "Times New Roman", serif;
@@ -127,15 +212,69 @@ nav {
   scroll-margin-top: 80px;
   color: var(--accent);
 }
+.post-body h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.8rem 0 0.6rem;
+  scroll-margin-top: 80px;
+  color: var(--fg);
+}
+.post-body .theorem {
+  font-style: italic;
+  color: var(--muted);
+  margin: 1rem 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+}
+.post-body ol { padding-left: 1.4rem; margin-bottom: 1.2rem; }
+.post-body ol li { margin-bottom: 0.4rem; }
 .post-body strong { font-weight: 700; }
 .post-body em { font-style: italic; }
-.post-body img { max-width: 100%; height: auto; display: block; margin: 1.5rem auto; }
+.post-body img { max-width: 540px; width: 100%; height: auto; display: block; margin: 1.5rem auto; }
 .post-body .caption { text-align: center; font-size: 0.8rem; color: var(--muted); margin-top: -1rem; margin-bottom: 1.5rem; }
 
 .share-links { display: flex; justify-content: center; gap: 0.6rem; margin-top: 2.5rem; padding: 1.2rem; background: var(--tag-bg); border-radius: 8px; }
-.share-links a { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--bg); border-radius: 8px; color: var(--muted); text-decoration: none; border: 1px solid var(--border); }
-.share-links a:hover { color: var(--accent); border-color: var(--accent); }
-.share-links svg { width: 20px; height: 20px; fill: currentColor; }
+.share-links a, .share-links button { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--bg); border-radius: 8px; color: var(--muted); text-decoration: none; border: 1px solid var(--border); cursor: pointer; }
+.share-links a:hover, .share-links button:hover { color: var(--accent); border-color: var(--accent); }
+.share-links a svg { width: 20px; height: 20px; fill: currentColor; }
+.share-links button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; }
+
+.post-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.post-nav-prev, .post-nav-next {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-decoration: none;
+  max-width: 45%;
+}
+
+.post-nav-next { align-items: flex-end; margin-left: auto; }
+
+.post-nav-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.post-nav-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.4;
+}
+
+.post-nav-prev:hover .post-nav-title,
+.post-nav-next:hover .post-nav-title { color: var(--accent); }
 
 footer {
   border-top: 1px solid var(--border);

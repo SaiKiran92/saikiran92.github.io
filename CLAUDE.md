@@ -22,23 +22,31 @@ git push origin main
 
 ## Architecture
 
-Two pages, each a self-contained HTML file with all CSS inlined in a `<style>` tag:
+Four pages, each a self-contained HTML file:
 
-- **`index.html`** — Home page listing blog posts
-- **`about.html`** — CV/About page with work history, education, skills
+- **`index.html`** — Personal homepage: bio intro, experience, education, skills
+- **`posts.html`** — Blog post listing with integrated Fuse.js search (fetches `index.json`)
+- **`projects.html`** — Projects page
 
-### Shared conventions (duplicated across files — no shared stylesheet)
+Shared assets:
+- **`style.css`** — All shared styles; CSS custom properties including `--accent` (#c8612a amber)
+- **`main.js`** — Nav injection, theme toggle, share links, reading time, KaTeX render
+- **`index.json`** — Post index for Fuse.js search
 
-- CSS custom properties: `--bg`, `--fg`, `--muted`, `--border`, `--tag-bg`, `--max` (760px max-width)
+### Shared conventions
+
+- CSS custom properties: `--bg`, `--fg`, `--muted`, `--border`, `--tag-bg`, `--accent`, `--max` (760px)
 - Responsive grid: 120px date column + content, collapses at ≤500px via `@media`
-- Sticky `<nav>` at top; semantic elements (`<article>`, `<section>`, `<nav>`)
-- System font stack: `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
+- Sticky `<nav>` at top; nav links: Home | Posts | Projects
+- System font stack for UI; Georgia serif for post body text
 
 ### Adding a blog post
 
-Inside `index.html`, follow the inline comment pattern near the posts section — each post is an HTML block within the posts container.
+1. Add an `<article class="post-entry">` block inside `#posts-list` in `posts.html`
+2. Add a corresponding entry to `index.json` for search indexing
+3. Create `posts/<slug>/index.html` for the post content
 
 ## Key Decisions
 
 - **Moved away from Hugo** (a static site generator) to plain HTML for simplicity and direct control.
-- **No shared CSS file** — styles are intentionally duplicated per-page to keep each file self-contained.
+- **Search integrated into posts page** — no separate search page; Fuse.js filters the visible post list inline.

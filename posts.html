@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
+  <link rel="stylesheet" href="style.css">
+  <title>Posts — Tales of the Fat Tails</title>
+  <style>
+    #search-input {
+      width: 100%;
+      padding: 0.55rem 0.8rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--fg);
+      outline: none;
+      margin-bottom: 1.8rem;
+    }
+    #search-input:focus { border-color: var(--accent); }
+
+    .posts { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .post-entry { position: relative; padding: 0.2rem 0 0.2rem 1rem; border-left: 3px solid var(--accent); }
+    .post-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; }
+    .post-entry h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; line-height: 1.35; }
+    .post-entry h2 a { color: var(--fg); text-decoration: none; }
+    .post-entry h2 a:hover { color: var(--accent); }
+    .post-entry h2 a::after { content: ''; position: absolute; inset: 0; }
+    .post-entry p { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.55; }
+
+    .tags { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .tag { font-size: 0.72rem; background: #fdf0e8; color: var(--accent); padding: 0.15rem 0.55rem; border-radius: 3px; }
+    [data-theme="dark"] .tag { background: #3a2518; }
+
+    .no-results { font-size: 0.9rem; color: var(--muted); font-style: italic; padding: 1rem 0; }
+  </style>
+</head>
+<body>
+
+  <nav id="nav"></nav>
+
+  <div class="content">
+    <h1>Posts</h1>
+    <input id="search-input" type="search" placeholder="Search posts..." autocomplete="off">
+
+    <div class="posts" id="posts-list">
+      <article class="post-entry">
+        <div class="post-meta">1 Jan 2026 &nbsp;|&nbsp; 4 min read</div>
+        <h2><a href="/posts/fundamental-theorems-asset-pricing/">The Fundamental Theorems of Asset Pricing: A Geometric Explanation</a></h2>
+        <p>The two Fundamental Theorems of Asset Pricing explained through geometry and linear algebra, avoiding probabilistic machinery.</p>
+        <div class="tags">
+          <span class="tag">asset pricing</span>
+          <span class="tag">no arbitrage</span>
+          <span class="tag">risk-neutral measure</span>
+          <span class="tag">linear algebra</span>
+        </div>
+      </article>
+
+      <article class="post-entry">
+        <div class="post-meta">29 Mar 2026 &nbsp;|&nbsp; 2 min read</div>
+        <h2><a href="/posts/quadratic-variation/">Quadratic Variation: The Most Important Concept in Stochastic Calculus</a></h2>
+        <p>Quadratic variation is what differentiates stochastic calculus from ordinary calculus — and understanding it makes everything else stop looking like magic.</p>
+        <div class="tags">
+          <span class="tag">stochastic calculus</span>
+          <span class="tag">Brownian motion</span>
+          <span class="tag">Itô calculus</span>
+        </div>
+      </article>
+
+      <!-- NEW POST: copy this block, fill in details, then add entry to index.json
+      <article class="post-entry">
+        <div class="post-meta">DD Mon YYYY &nbsp;|&nbsp; N min read</div>
+        <h2><a href="/posts/your-slug/">Post title</a></h2>
+        <p>One or two sentence summary.</p>
+        <div class="tags">
+          <span class="tag">tag</span>
+        </div>
+      </article>
+      -->
+    </div>
+  </div>
+
+  <footer>© 2026 Sai Kiran Mayakuntla</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+  <script defer src="main.js"></script>
+  <script>
+    var fuse;
+    var searchInput = document.getElementById('search-input');
+    var postsList = document.getElementById('posts-list');
+    var allEntries = Array.from(postsList.querySelectorAll('.post-entry'));
+
+    fetch('/index.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        fuse = new Fuse(data, {
+          keys: ['title', 'summary', 'content', 'tags'],
+          threshold: 0.4,
+          ignoreLocation: true
+        });
+      });
+
+    searchInput.addEventListener('input', function() {
+      var query = this.value.trim();
+      if (!query || !fuse) {
+        allEntries.forEach(function(el) { el.style.display = ''; });
+        return;
+      }
+      var results = fuse.search(query);
+      var matchedPermalinks = results.map(function(r) { return r.item.permalink; });
+      allEntries.forEach(function(el) {
+        var link = el.querySelector('h2 a');
+        var href = link ? link.getAttribute('href') : '';
+        el.style.display = matchedPermalinks.some(function(p) { return href.indexOf(p) !== -1; }) ? '' : 'none';
+      });
+      if (matchedPermalinks.length === 0) {
+        var msg = postsList.querySelector('.no-results');
+        if (!msg) {
+          msg = document.createElement('p');
+          msg.className = 'no-results';
+          postsList.appendChild(msg);
+        }
+        msg.textContent = 'No results for "' + query + '".';
+      } else {
+        var msg = postsList.querySelector('.no-results');
+        if (msg) msg.remove();
+      }
+    });
+  </script>
+
+</body>
+</html>
