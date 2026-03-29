@@ -31,16 +31,18 @@
     .posts-heading { font-size: 1rem; font-weight: 600; color: var(--muted); margin-bottom: 0.5rem; }
     .empty-state { padding: 3rem 0; color: var(--muted); font-size: 0.9rem; font-style: italic; }
 
-    .post-entry { position: relative; padding: 1.2rem; background: var(--tag-bg); border-radius: 8px; }
+    .post-entry { position: relative; padding: 1rem 1.2rem; border-left: 3px solid var(--accent); }
     .post-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; }
     .post-entry h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; line-height: 1.35; }
     .post-entry h2 a { color: var(--fg); text-decoration: none; }
+    .post-entry h2 a:hover { color: var(--accent); }
     .post-entry h2 a::after { content: ''; position: absolute; inset: 0; }
     .post-entry p { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.6rem; line-height: 1.55; }
     .tags { position: relative; z-index: 1; }
 
     .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-    .tag { font-size: 0.72rem; background: var(--tag-bg); color: var(--muted); padding: 0.15rem 0.55rem; border-radius: 3px; }
+    .tag { font-size: 0.72rem; background: #fdf0e8; color: var(--accent); padding: 0.15rem 0.55rem; border-radius: 3px; }
+    [data-theme="dark"] .tag { background: #3a2518; color: var(--accent); }
   </style>
 </head>
 <body>
@@ -48,7 +50,7 @@
   <nav id="nav"></nav>
 
   <div class="profile">
-    <p class="profile-bio">Hi, I'm <strong>Sai Kiran Mayakuntla</strong>. I write about Quant stuff here. You can reach me on <a href="https://linkedin.com/in/saikiranm92" target="_blank" class="profile-link">LinkedIn</a>.</p>
+    <p class="profile-bio">Hi, I'm <strong>Sai Kiran Mayakuntla</strong>. I write on Quant topics here. You can reach me on <a href="https://linkedin.com/in/saikiranm92" target="_blank" class="profile-link">LinkedIn</a>.</p>
   </div>
   <hr class="profile-rule" />
 

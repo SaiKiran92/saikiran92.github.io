@@ -30,6 +30,33 @@ document.getElementById('theme-toggle').addEventListener('click', function () {
   localStorage.setItem('theme', next);
 });
 
+// Share links
+(function () {
+  var url = encodeURIComponent(window.location.href);
+  var title = encodeURIComponent(document.title);
+  var map = {
+    'share-twitter':  'https://twitter.com/intent/tweet?url=' + url + '&text=' + title,
+    'share-linkedin': 'https://www.linkedin.com/sharing/share-offsite/?url=' + url,
+    'share-reddit':   'https://reddit.com/submit?url=' + url + '&title=' + title,
+    'share-facebook': 'https://www.facebook.com/sharer/sharer.php?u=' + url,
+    'share-whatsapp': 'https://wa.me/?text=' + title + '%20' + url,
+    'share-telegram': 'https://t.me/share/url?url=' + url + '&text=' + title
+  };
+  Object.keys(map).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.href = map[id];
+  });
+}());
+
+// Reading time
+var postBody = document.querySelector('.post-body');
+var readingTimeEl = document.getElementById('reading-time');
+if (postBody && readingTimeEl) {
+  var words = postBody.textContent.trim().split(/\s+/).length;
+  var minutes = Math.max(1, Math.round(words / 200));
+  readingTimeEl.textContent = minutes + ' min read';
+}
+
 // KaTeX auto-render
 if (typeof renderMathInElement !== 'undefined') {
   renderMathInElement(document.body, {
