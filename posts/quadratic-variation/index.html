@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../../style.css">
+  <title>Quadratic Variation — Tales of the Fat Tails</title>
+</head>
+<body>
+
+  <nav id="nav"></nav>
+
+  <div class="content">
+
+    <div class="post-header">
+      <h1 class="post-title">Quadratic Variation: The Most Important Concept in Stochastic Calculus</h1>
+      <div class="post-meta">Date: 29 Mar 2026 &nbsp;|&nbsp; Estimated Reading Time: 4 min &nbsp;|&nbsp; Author: Sai Kiran Mayakuntla</div>
+    </div>
+
+    <details class="toc">
+      <summary>Table of Contents</summary>
+      <ul>
+        <li><a href="#smooth-vs-jagged">Smooth vs. jagged lines</a></li>
+        <li><a href="#brownian-motion">Brownian motion: deterministic quadratic variation</a></li>
+        <li><a href="#fundamental-idea">The fundamental idea</a></li>
+      </ul>
+    </details>
+
+    <div class="post-body">
+
+      <p>The term "Quadratic Variation" may not inspire much excitement—it's no "risk-neutral pricing" or "Black–Scholes formula." But you don't <em>really</em> understand those big ideas until you first understand this quietly powerful one. Why? Because:</p>
+
+      <p><strong>Quadratic Variation is what differentiates stochastic calculus from ordinary calculus.</strong></p>
+
+      <h2 id="smooth-vs-jagged">Smooth vs. jagged lines</h2>
+
+      <p>In ordinary calculus, the paths of functions are smooth—zoom in on a small enough interval, and the curve looks almost like a straight line. In stochastic calculus, the paths of Brownian motion are <em>rough</em>: no matter how far you zoom in, the curve remains jagged and unpredictable. This persistent roughness is exactly what quadratic variation measures—the way randomness accumulates over time.</p>
+
+      <img src="fig1.png" alt="Smooth path of ordinary calculus vs. jagged path of Brownian motion">
+
+      <h2 id="brownian-motion">Brownian motion: deterministic quadratic variation</h2>
+
+      <p>For Brownian motion, the increments behave differently:</p>
+
+      $$W(t + \Delta t) - W(t) \sim \mathcal{N}(0,\, \Delta t).$$
+
+      <p>The expectation of the quadratic variation works out cleanly:</p>
+
+      $$\mathbb{E}\!\left[[W]_T\right]
+        = \mathbb{E}\!\left[\sum_{k=0}^{n-1}\bigl(W(t_{k+1}) - W(t_k)\bigr)^2\right]
+        = \sum_{k=0}^{n-1} \Delta t = T.$$
+
+      <p>In fact, it turns out that $[W]_T$ is deterministic! Here's the intuition: although each increment is random, they are all independent and have the same mean, $\Delta t$ (or $T/n$). When you add a bunch of them, the sum approaches $T$, as the <strong>law of large numbers</strong> kicks in. The average squared increment converges to its expectation $\Delta t$. Multiplying by $n$ then stabilizes the sum at $T$.</p>
+
+      <p>That's why Brownian motion has <strong>deterministic quadratic variation</strong>:</p>
+
+      $$[W]_T = T.$$
+
+      <p>The path is wild, but the accumulated roughness ticks forward like clockwork. In Itô calculus this is written as:</p>
+
+      $$\int_0^T (dW_t)^2 = T,$$
+
+      <p>or, in shorthand:</p>
+
+      $$(dW_t)^2 = dt.$$
+
+      <p>This little identity is the notational backbone of Itô calculus—it's the reason new rules (like Itô's Lemma) exist at all.</p>
+
+      <h2 id="fundamental-idea">The fundamental idea</h2>
+
+      <p>Quadratic variation doesn't just tidy up definitions. It explains why Brownian motion is rough, why stochastic integrals make sense, why martingales behave as they do, and why measure changes work.</p>
+
+      <p>Strip quadratic variation away, and the entire machinery of stochastic calculus collapses.</p>
+
+      <p>That's why this dull-sounding term is actually the most fundamental concept in the field. Understand it, and the rest of stochastic calculus — Itô's Lemma, martingale representation, option pricing — stops looking like magic and starts looking inevitable.</p>
+
+    </div>
+
+  </div>
+
+  <footer>© 2026 Sai Kiran Mayakuntla</footer>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../../main.js"></script>
+
+</body>
+</html>

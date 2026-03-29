@@ -3,126 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sai Kiran Mayakuntla</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Tales of the Fat Tails</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #fff;
-      --fg: #1a1a1a;
-      --muted: #787878;
-      --border: #e5e5e5;
-      --tag-bg: #f5f5f5;
-      --max: 760px;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    nav {
-      position: sticky;
-      top: 0;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      z-index: 50;
-    }
-
-    .nav-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-title {
-      font-weight: 600;
-      font-size: 1rem;
-      text-decoration: none;
-      color: var(--fg);
-    }
-
-    .nav-right {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .nav-right a {
-      font-size: 0.85rem;
-      color: var(--muted);
-      text-decoration: none;
-    }
-    .nav-right a:hover { color: var(--fg); }
-    .nav-right a.active { color: var(--fg); font-weight: 500; }
-
     .profile {
       max-width: var(--max);
       margin: 0 auto;
       padding: 2.2rem 1.5rem 0;
     }
+    .profile h1 { font-size: 1.35rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .profile .tagline { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.9rem; }
 
-    .profile h1 {
-      font-size: 1.35rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
+    .profile-bio { font-size: 1.2rem; color: var(--fg); line-height: 1.6; margin-bottom: 0.5rem; max-width: 580px; }
+    .profile-link { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+    .profile-link:hover { opacity: 0.7; }
 
-    .profile .tagline {
-      font-size: 0.88rem;
-      color: var(--muted);
-      margin-bottom: 0.9rem;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 1rem;
-      font-size: 0.82rem;
-    }
-
-    .social-links a {
-      color: var(--muted);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.28rem;
-    }
+    .social-links { display: flex; gap: 1rem; font-size: 0.82rem; }
+    .social-links a { color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.28rem; }
     .social-links a:hover { color: var(--fg); }
+    .social-links svg { width: 28px; height: 28px; fill: currentColor; flex-shrink: 0; }
 
-    .social-links svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
+    .profile-rule { max-width: var(--max); margin: 1.5rem auto 0; border: none; border-top: 1px solid var(--border); }
 
-    .profile-rule {
-      max-width: var(--max);
-      margin: 1.5rem auto 0;
-      border: none;
-      border-top: 1px solid var(--border);
-    }
+    .posts { max-width: var(--max); margin: 0 auto; padding: 1.5rem 1.5rem 4rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .posts-heading { font-size: 1rem; font-weight: 600; color: var(--muted); margin-bottom: 0.5rem; }
+    .empty-state { padding: 3rem 0; color: var(--muted); font-size: 0.9rem; font-style: italic; }
 
-    .posts {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.5rem 4rem;
-    }
+    .post-entry { position: relative; padding: 1.2rem; background: var(--tag-bg); border-radius: 8px; }
+    .post-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; }
+    .post-entry h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; line-height: 1.35; }
+    .post-entry h2 a { color: var(--fg); text-decoration: none; }
+    .post-entry h2 a::after { content: ''; position: absolute; inset: 0; }
+    .post-entry p { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.6rem; line-height: 1.55; }
+    .tags { position: relative; z-index: 1; }
 
-    .empty-state {
-      padding: 3rem 0;
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-style: italic;
-    }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .tag { font-size: 0.72rem; background: var(--tag-bg); color: var(--muted); padding: 0.15rem 0.55rem; border-radius: 3px; }
+  </style>
+</head>
+<body>
 
-    /* HOW TO ADD A POST — copy this block and paste at the top of .posts:
+  <nav id="nav"></nav>
+
+  <div class="profile">
+    <p class="profile-bio">Hi, I'm <strong>Sai Kiran Mayakuntla</strong>. I write about Quant stuff here. You can reach me on <a href="https://linkedin.com/in/saikiranm92" target="_blank" class="profile-link">LinkedIn</a>.</p>
+  </div>
+  <hr class="profile-rule" />
+
+  <div class="posts">
+    <article class="post-entry">
+      <div class="post-meta">29 Mar 2026</div>
+      <h2><a href="posts/quadratic-variation/">Quadratic Variation: The Most Important Concept in Stochastic Calculus</a></h2>
+      <p>Quadratic variation is what differentiates stochastic calculus from ordinary calculus — and understanding it makes everything else stop looking like magic.</p>
+      <div class="tags">
+        <span class="tag">stochastic calculus</span>
+        <span class="tag">Brownian motion</span>
+        <span class="tag">Itô calculus</span>
+      </div>
+    </article>
+
+    <!-- HOW TO ADD A POST — copy this block and paste above the empty-state line:
     <article class="post-entry">
       <div class="post-meta">MMM YYYY</div>
       <h2><a href="your-post-filename.html">Post title here</a></h2>
@@ -132,96 +74,15 @@
         <span class="tag">tag two</span>
       </div>
     </article>
-    */
-
-    .post-entry {
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .post-meta {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-    }
-
-    .post-entry h2 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      line-height: 1.35;
-    }
-
-    .post-entry h2 a {
-      color: var(--fg);
-      text-decoration: none;
-    }
-    .post-entry h2 a:hover { text-decoration: underline; }
-
-    .post-entry p {
-      font-size: 0.88rem;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-      line-height: 1.55;
-    }
-
-    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-
-    .tag {
-      font-size: 0.72rem;
-      background: var(--tag-bg);
-      color: var(--muted);
-      padding: 0.15rem 0.55rem;
-      border-radius: 3px;
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-  </style>
-</head>
-<body>
-
-  <nav>
-    <div class="nav-inner">
-      <a class="nav-title" href="index.html">Sai Kiran Mayakuntla</a>
-      <div class="nav-right">
-        <a href="index.html" class="active">Posts</a>
-        <a href="about.html">About</a>
-      </div>
-    </div>
-  </nav>
-
-  <div class="profile">
-    <h1>Sai Kiran Mayakuntla</h1>
-    <p class="tagline">I write about Quant stuff.</p>
-    <div class="social-links">
-
-      <a href="https://linkedin.com/in/saikiranm92" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        LinkedIn
-      </a>
-
-      <a href="https://github.com/SaiKiran92" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        GitHub
-      </a>
-
-    </div>
-  </div>
-  <hr class="profile-rule" />
-
-  <div class="posts">
-    <p class="empty-state">No posts yet — check back soon.</p>
-
-    <!-- ADD POSTS HERE — copy the block in the comment above this div -->
+    Also add a corresponding entry to index.json for search indexing.
+    -->
   </div>
 
   <footer>© 2026 Sai Kiran Mayakuntla</footer>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="main.js"></script>
 
 </body>
 </html>
