@@ -1,0 +1,71 @@
+        <p>See the puzzle statement <a href="#" title="TODO: add Jane Street puzzle URL">here</a>. An outline of the solution is given by Jane Street <a href="#" title="TODO: add Jane Street solution URL">here</a>. I will provide a detailed explanation of this below.</p>
+
+        <p><strong>Solution:</strong></p>
+
+        <p>I'll start with an educated guess about the type of optimal strategy each robot might choose.</p>
+
+        <p>Guess 1: The optimal strategy for each robot is to wait until it reaches a certain threshold $t$, and then jump from any position beyond $t$.</p>
+
+        <p>Firstly, we're dealing with binary (Wait/Jump) decisions. And secondly, the robots must consider the trade-off between reaching higher scores, and the probability of crossing the takeoff point and scoring $0$. So, I hope you see that this guess is sufficiently motivated.</p>
+
+        <h2 id="zero-probability">Probability of a Robot Scoring Zero, Given Threshold t</h2>
+
+        <p>Let $z(x|t)$ denote the probability of a robot scoring zero, given its current position $x$ and threshold $t$. This probability must satisfy the following recursive relation:</p>
+
+        $$z(x|t) = \begin{cases} x + \displaystyle\int_x^1 z(y|t)\,dy, & \text{if } 0 \leq x \leq t \\[6pt] 0, & \text{if } t < x \leq 1 \end{cases}$$
+
+        <p>According to its strategy, the robot chooses to "Wait" from position $x$ (where $x \leq t$). Its next move is drawn uniformly randomly from $0$ to $1$. Hence, the robot crosses the takeoff point (i.e. $1$) with probability $x$. And with probability $(1 - x)$, it ends up (uniformly randomly) at some position between $x$ and $1$, say $y$. The decision making process then repeats from position $y$. This reasoning leads to the above-mentioned recursive relation.</p>
+
+        <p>Beyond $t$, the robot chooses to "Jump" and will always achieve a positive score.</p>
+
+        <p>Looking back at the first case, the upper limit of the integral can be further restricted to $t$, as $z(x|t)$ is anyway $0$ beyond that point. Thus, we have:</p>
+
+        $$z(x|t) = \begin{cases} x + \displaystyle\int_x^t z(y|t)\,dy, & \text{if } 0 \leq x \leq t \\[6pt] 0, & \text{if } t < x \leq 1 \end{cases}$$
+
+        <p>Taking a derivative with respect $x$ on both sides (for the first case) and using the boundary condition: $m(t|t) = t$, we can derive that:</p>
+
+        $$z(x|t) = \begin{cases} 1 - (1-t)e^{t-x}, & \text{if } 0 \leq x \leq t \\[6pt] 0, & \text{if } t < x \leq 1 \end{cases}$$
+
+        <p>And we finally have the probability $m(t)$ of the robot scoring zero in any attempt as:</p>
+
+        $$m(t) = z(0|t) = 1 - (1-t)e^t$$
+
+        <h2 id="nonzero-score">Conditional Probability of a Robot's Non-Zero Score, Given Threshold t</h2>
+
+        <p>A robot's non-zero score can be expressed as the sum of two random variables: Its jump position $J$, and a standard uniform random variable $U$. From any position $x$ before the threshold $t$, the robot is equally likely to land anywhere between $t$ and $1$. Hence, the non-zero score is actually the sum of two uniformly distributed random variables, $J$ and $U$, with supports, $[t,1]$ and $[0,1]$, respectively. This sum follows a trapezoidal-shaped distribution, with the following CDF:</p>
+
+        $$P(s|t) = \begin{cases} \dfrac{(x-t)^2}{2(1-t)}, & \text{if } t \leq x < 1 \\[10pt] 1, & \text{if } t \leq x < (1+t) \\[6pt] 1 - \dfrac{(2-x)^2}{2(1-t)}, & \text{if } (1+t) \leq x \leq 2 \end{cases}$$
+
+        <h2 id="optimal-threshold">Calculating the Optimal Threshold t</h2>
+
+        <p>Guess 2: The optimal thresholds chosen by the two competing robots are equal.</p>
+
+        <p>Given the symmetry of the competition, this is a reasonable guess. Recall that the robots compete in each attempt "without knowing the other's result".</p>
+
+        <p>Guess 3: At the threshold position $t$, the robot has an equal probability of winning, whether it chooses to "Jump" or "Wait".</p>
+
+        <p>I make this guess/assumption purely to simplify the computation. This is clearly a Nash Equilibrium problem, but a rigorous approach could be challenging algebraically. Assuming the probability function is "well-behaved" in some sense, we can hopefully work with this. If it turns out to be incorrect, we can always cross-validate the solution later.</p>
+
+        <p>Now, given this setting, consider a robot positioned exactly at the threshold $t$. Its probability of winning if it chooses to Jump is:</p>
+
+        $$m(t) + (1 - m(t)) \int_t^{1+t} P(y|t)\,dy$$
+
+        <p>The two terms correspond to the scenarios where the other robot scores zero and non-zero values, respectively. In the latter case, the first robot's score is uniformly distributed between $t$ and $(1+t)$. We therefore integrate over the CDF of the non-zero score to determine the first robot's winning probability.</p>
+
+        <p>Similarly, the winning probability of the first robot, if it instead chose to Wait at position $t$ is:</p>
+
+        $$\frac{tm(t)}{2} + (1-t)m(t) + (1 - m(t))(1-t) \int_t^1 \int_0^1 P(y + u)\,dy\,du$$
+
+        <p>This equation accounts for all possible combinations of zero and non-zero scores for the two robots. The double integral represents the probability of the first robot winning, given that both achieve non-zero scores. By applying the symmetry argument again, we can (thankfully!) conclude that this probability is equal to $0.5$. We can thus simplify it to:</p>
+
+        $$\frac{1 - t + m(t)}{2}$$
+
+        <p>Equating the two probabilities and performing the necessary algebraic manipulations, we obtain:</p>
+
+        $$(t^3 - 3t + 2)e^t = 3t$$
+
+        <p>Using an appropriate fixed-point algorithm, we solve for the threshold, which is approximately $0.416195355$.</p>
+
+        <h2 id="answer">Calculating the Desired Probability</h2>
+
+        <p>We can calculate the probability of scoring zero on the first attempt by substituting the optimal threshold into $m(t)$, which yields approximately $0.114845886$.</p>

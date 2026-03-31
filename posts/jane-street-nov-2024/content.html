@@ -1,0 +1,78 @@
+        <p>See the Puzzle Statement <a href="https://www.janestreet.com/puzzles/beside-the-point-index/" title="Jane Street puzzle November 2024">here</a>. And the official outline of the solution from Jane Street is <a href="https://www.janestreet.com/puzzles/beside-the-point-solution/" title="Jane Street puzzle November 2024 solution">here</a>. I have a more detailed explanation of the solution below.</p>
+
+        <h2 id="formulation">Problem Formulation</h2>
+
+        <figure>
+          <img src="fig1.png" alt="Illustration of the problem statement" />
+          <figcaption>Figure 1: Illustration of the problem statement.</figcaption>
+        </figure>
+
+        <p>Let us denote the blue and red points by $(x,y)$ and $(a,b)$, respectively. The required probability can be obtained by solving the following quadruple integral:</p>
+
+        $$\int_0^1 \int_0^1 \int_0^1 \int_0^1 M(x, y, a, b) \, db \, da \, dy \, dx$$
+
+        <p>where $M(x,y,a,b)$ is an indicator function, defined as:</p>
+
+        $$M(x, y, a, b) = \begin{cases} 1, & \text{if } \exists\, z \text{ s.t. } 0 \leq z \leq 1 \text{ and } \sqrt{(x-z)^2 + y^2} = \sqrt{(a-z)^2 + b^2} \\ 0, & \text{o/w} \end{cases}$$
+
+        <p>The above formulation is essentially a restatement of the problem in mathematical terms. It only assumes, without loss of generality, that the square is of size 1, with coordinates $(0,0)$ and $(1,1)$ on the diagonally opposite corners.</p>
+
+        <h2 id="symmetry">Symmetry Reduction</h2>
+
+        <figure>
+          <img src="fig2.png" alt="Symmetry of the square" />
+          <figcaption>Figure 2: Symmetry of the square.</figcaption>
+        </figure>
+
+        <p>The outer two integrals can be slightly simplified using the rotational and reflection symmetry of the square:</p>
+
+        $$8 \times \int_0^{1/2} \int_0^{x} \int_0^1 \int_0^1 M(x, y, a, b) \, db \, da \, dy \, dx$$
+
+        <h2 id="analytical">Analytical Solution</h2>
+
+        <p>Keep in mind that we only require the solution up to ten decimal places. Although a numerical approach can be used, we need to solve the inner integrals analytically to ensure the solution can be approximated within a reasonable amount of time. Therefore, we will first derive an analytical expression for the conditional probability for a given blue point $(x,y)$. Once this is done, we can apply a numerical technique to compute the required probability by integrating over $x$ and $y$.</p>
+
+        <p>Let us first calculate the conditional probability corresponding to a given $(x,y,a)$, i.e. we know the X-coordinate $a$ of the red point, in addition to the blue point $(x,y)$. A point $(a,b)$ satisfies the given property of the red point if and only if:</p>
+
+        $$\exists\, z \text{ s.t. } 0 \leq z \leq 1 \text{ and } b^2 = (x^2 - a^2 + y^2) - 2z(x - a)$$
+
+        <p>Since the red point must lie within the square, we also have: $0 \leq b \leq 1$. But note from the above condition that $b$ is only real when:</p>
+
+        $$z \leq \frac{x + a}{2} + \frac{y^2}{2(x - a)}$$
+
+        <p>So, there need not always be a possible red point corresponding to every $z \in [0,1]$. But because $b$ is a continuous function $z$, given $(x,y,a)$, these points form a contiguous interval where they do exist, and the length of this interval represents the conditional probability given $(x,y,a)$. Furthermore:</p>
+
+        $$\frac{db}{dz} = \frac{2(a - x)}{b}$$
+
+        <p>Thus, $b$ is monotonically decreasing with respect to $z$ when $a \leq x$, and monotonically increasing when $a > x$. By evaluating $b$ at the extremes (i.e., $z=0$ and $z=1$), we observe that the upper bounds of $b$ never reach 1 under the conditions $0 \leq x \leq 0.5$, $0 \leq y \leq x$, and $0 \leq a \leq 1$. Thus, the upper bound of the interval of $b$ given $(x,y,a)$ will be:</p>
+
+        $$U(x, y, a) = \begin{cases} \sqrt{x^2 - a^2 + y^2}, & \text{if } a \leq x \\[6pt] \sqrt{(1-x)^2 - (1-a)^2 + y^2}, & \text{o/w} \end{cases}$$
+
+        <p>Unlike the upper bound of $b$, its lower bound may be 0 for some values of $(x,y,a)$. Consider the case when $0 \leq a \leq x$. As $b$ decreases with $z$, it is possible that the lower bound is given when $z=1$, as:</p>
+
+        $$\sqrt{(1-x)^2 - (1-a)^2 + y^2}$$
+
+        <p>However, the above is a real number only when:</p>
+
+        $$a < \left[1 - \sqrt{(1-x)^2 + y^2}\right]$$
+
+        <p>Thus, we have that:</p>
+
+        $$L(x, y, a) = \begin{cases} 0, & \text{if } 0 \leq a \leq \left[1 - \sqrt{(1-x)^2 + y^2}\right] \\[6pt] \sqrt{(1-x)^2 - (1-a)^2 + y^2}, & \text{if } \left[1 - \sqrt{(1-x)^2 + y^2}\right] < a \leq x \end{cases}$$
+
+        <p>Applying a similar logic for when $x &lt; a \leq 1$, we have:</p>
+
+        $$L(x, y, a) = \begin{cases} 0, & \text{if } 0 \leq a \leq \left[1 - \sqrt{(1-x)^2 + y^2}\right] \\[6pt] \sqrt{(1-x)^2 - (1-a)^2 + y^2}, & \text{if } \left[1 - \sqrt{(1-x)^2 + y^2}\right] < a \leq x \\[6pt] \sqrt{x^2 - a^2 + y^2}, & \text{if } x < a \leq \sqrt{x^2 + y^2} \\[6pt] 0, & \text{o/w (i.e. } \sqrt{x^2 + y^2} < a \leq 1) \end{cases}$$
+
+        <figure>
+          <img src="fig3.png" alt="L(x,y,a) for all a in [0,1]" />
+          <figcaption>Figure 3: $L(x,y,a)$ for all $a \in [0,1]$.</figcaption>
+        </figure>
+
+        <h2 id="answer">Answer</h2>
+
+        <p>Thus, the required conditional probability for a given blue point $(x,y)$ can be given by the sum of a bunch of double integrals, which can be analytically solved as:</p>
+
+        $$(x^2 + y^2) \times \left[\arcsin\!\left(\frac{x}{\sqrt{x^2 + y^2}}\right) - \frac{\pi}{4}\right] + \left((1-x)^2 + y^2\right) \times \left[\arcsin\!\left(\frac{1-x}{\sqrt{(1-x)^2 + y^2}}\right) - \frac{\pi}{4}\right] + y$$
+
+        <p>Integrating this numerically over $0 \leq x \leq 0.5$, $0 \leq y \leq x$, which forms one-eighth of the area of the square, we get $0.06142594735478852$. And scaling it by 8, we get the probability we want as: $0.49140757883830816$.</p>

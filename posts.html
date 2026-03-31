@@ -6,6 +6,8 @@
   <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
   <link rel="stylesheet" href="style.css">
   <title>Posts — Tales of the Fat Tails</title>
+  
+  
   <style>
     #search-input {
       width: 100%;
@@ -37,92 +39,112 @@
 
     .no-results { font-size: 0.9rem; color: var(--muted); font-style: italic; padding: 1rem 0; }
   </style>
+
 </head>
 <body>
 
   <nav id="nav"></nav>
 
+  
   <div class="content">
     <h1>Posts</h1>
     <input id="search-input" type="search" placeholder="Search posts..." autocomplete="off">
 
     <div class="posts" id="posts-list">
+      
       <article class="post-entry">
         <div class="post-meta">1 Jan 2026 &nbsp;|&nbsp; 4 min read</div>
         <h2><a href="/posts/fundamental-theorems-asset-pricing/">The Fundamental Theorems of Asset Pricing: A Geometric Explanation</a></h2>
         <p>The two Fundamental Theorems of Asset Pricing explained through geometry and linear algebra, avoiding probabilistic machinery.</p>
         <div class="tags">
+          
           <span class="tag">asset pricing</span>
+          
           <span class="tag">no arbitrage</span>
+          
           <span class="tag">risk-neutral measure</span>
+          
           <span class="tag">linear algebra</span>
+          
         </div>
       </article>
-
+      
       <article class="post-entry">
         <div class="post-meta">7 Sep 2025 &nbsp;|&nbsp; 2 min read</div>
         <h2><a href="/posts/quadratic-variation/">Quadratic Variation: The Most Important Concept in Stochastic Calculus</a></h2>
         <p>Quadratic variation is what differentiates stochastic calculus from ordinary calculus — and understanding it makes everything else stop looking like magic.</p>
         <div class="tags">
+          
           <span class="tag">stochastic calculus</span>
+          
           <span class="tag">Brownian motion</span>
+          
           <span class="tag">Itô calculus</span>
+          
         </div>
       </article>
-
+      
       <article class="post-entry">
         <div class="post-meta">3 Dec 2024 &nbsp;|&nbsp; 8 min read</div>
         <h2><a href="/posts/jane-street-nov-2024/">Jane Street Puzzle — November 2024 — Beside the Point</a></h2>
         <p>A detailed solution to Jane Street's "Beside the Point" puzzle: finding the probability that two random points in a unit square are equidistant from some point on the bottom edge.</p>
         <div class="tags">
+          
           <span class="tag">probability</span>
+          
           <span class="tag">geometry</span>
+          
           <span class="tag">Jane Street</span>
+          
           <span class="tag">integration</span>
+          
         </div>
       </article>
-
+      
       <article class="post-entry">
         <div class="post-meta">14 Aug 2024 &nbsp;|&nbsp; 7 min read</div>
         <h2><a href="/posts/jane-street-mar-2023/">Jane Street Puzzle — March 2023 — Robot Long Jump</a></h2>
         <p>A detailed solution to Jane Street's "Robot Long Jump" puzzle: deriving the optimal threshold strategy for two competing robots and the probability of scoring zero.</p>
         <div class="tags">
+          
           <span class="tag">probability</span>
+          
           <span class="tag">game theory</span>
+          
           <span class="tag">Jane Street</span>
+          
           <span class="tag">Nash equilibrium</span>
+          
         </div>
       </article>
-
+      
       <article class="post-entry">
         <div class="post-meta">26 May 2024 &nbsp;|&nbsp; 6 min read</div>
         <h2><a href="/posts/jane-street-feb-2024/">Jane Street Puzzle — February 2024 — Some Off Square</a></h2>
         <p>An alternative solution to Jane Street's "Some Off Square" puzzle: finding the exact probability that a circle defined by two random points inside a unit square extends beyond the square.</p>
         <div class="tags">
+          
           <span class="tag">probability</span>
+          
           <span class="tag">geometry</span>
+          
           <span class="tag">Jane Street</span>
+          
           <span class="tag">integration</span>
+          
         </div>
       </article>
-
-      <!-- NEW POST: copy this block, fill in details, then add entry to index.json
-      <article class="post-entry">
-        <div class="post-meta">DD Mon YYYY &nbsp;|&nbsp; N min read</div>
-        <h2><a href="/posts/your-slug/">Post title</a></h2>
-        <p>One or two sentence summary.</p>
-        <div class="tags">
-          <span class="tag">tag</span>
-        </div>
-      </article>
-      -->
+      
     </div>
   </div>
 
+
   <footer>© 2026 Sai Kiran Mayakuntla</footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+  
   <script defer src="main.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
   <script>
     var fuse;
     var searchInput = document.getElementById('search-input');
@@ -166,6 +188,7 @@
       }
     });
   </script>
+
 
 </body>
 </html>

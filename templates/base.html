@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
+  {% if katex %}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  {% endif %}<link rel="stylesheet" href="{{ depth }}style.css">
+  <title>{% block title %}Tales of the Fat Tails{% endblock %}</title>
+  {% block meta %}{% endblock %}
+  {% block extra_style %}{% endblock %}
+</head>
+<body>
+
+  <nav id="nav"></nav>
+
+  {% block content %}{% endblock %}
+
+  <footer>© 2026 Sai Kiran Mayakuntla</footer>
+
+  {% if katex %}
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  {% endif %}
+  <script defer src="{{ depth }}main.js"></script>
+  {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+title: "Quadratic Variation: The Most Important Concept in Stochastic Calculus"
+date: "7 Sep 2025"
+date_iso: "2025-09-07"
+reading_time: 2
+description: "Why quadratic variation is the concept that differentiates stochastic calculus from ordinary calculus, and why it matters for understanding Brownian motion."
+summary: "Quadratic variation is what differentiates stochastic calculus from ordinary calculus — and understanding it makes everything else stop looking like magic."
+tags:
+  - stochastic calculus
+  - Brownian motion
+  - Itô calculus
+toc:
+  - {id: smooth-vs-jagged, label: "Smooth vs. jagged lines"}
+  - {id: brownian-motion, label: "Brownian motion: deterministic quadratic variation"}
+  - {id: fundamental-idea, label: "The fundamental idea"}
+search_content: "Quadratic Variation is what differentiates stochastic calculus from ordinary calculus. In ordinary calculus, the paths of functions are smooth. In stochastic calculus, the paths of Brownian motion are rough: no matter how far you zoom in, the curve remains jagged and unpredictable. This persistent roughness is exactly what quadratic variation measures. For Brownian motion the increments are normally distributed with variance delta t. The quadratic variation is deterministic: [W]_T = T. The path is wild, but the accumulated roughness ticks forward like clockwork. In Itô calculus this gives (dW_t)^2 = dt, the notational backbone of Itô calculus and the reason Itô's Lemma exists. Quadratic variation explains why Brownian motion is rough, why stochastic integrals make sense, why martingales behave as they do, and why measure changes work. Strip it away and the entire machinery of stochastic calculus collapses."

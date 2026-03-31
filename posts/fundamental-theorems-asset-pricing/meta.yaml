@@ -1,0 +1,17 @@
+title: "The Fundamental Theorems of Asset Pricing: A Geometric Explanation"
+date: "1 Jan 2026"
+date_iso: "2026-01-01"
+reading_time: 4
+description: "An explanation of the two Fundamental Theorems of Asset Pricing using geometry and linear algebra, avoiding probabilistic machinery."
+summary: "The two Fundamental Theorems of Asset Pricing explained through geometry and linear algebra, avoiding probabilistic machinery."
+tags:
+  - asset pricing
+  - no arbitrage
+  - risk-neutral measure
+  - linear algebra
+toc:
+  - {id: setting-the-stage, label: "Setting the Stage"}
+  - {id: first-ftap, label: "First Fundamental Theorem"}
+  - {id: second-ftap, label: "Second Fundamental Theorem"}
+  - {id: final-note, label: "Final Note"}
+search_content: "This post explains the two Fundamental Theorems of Asset Pricing using geometry and linear algebra, avoiding probabilistic machinery. We consider a one-period binomial market with a stock and a risk-free bond. Each traded asset is a vector in payoff space. The price operator assigns a time 0 price to each payoff vector. The First FTAP states: a market admits no arbitrage if and only if there exists a risk-neutral pricing measure. The Second FTAP states: in a complete market there is exactly one risk-neutral pricing measure; in an incomplete market there are many."

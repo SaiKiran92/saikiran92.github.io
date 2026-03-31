@@ -1,44 +1,66 @@
 [
   {
-    "title": "The Fundamental Theorems of Asset Pricing: A Geometric Explanation",
-    "permalink": "/posts/fundamental-theorems-asset-pricing/",
-    "date": "1 Jan 2026",
-    "summary": "The two Fundamental Theorems of Asset Pricing explained through geometry and linear algebra, avoiding probabilistic machinery.",
-    "tags": ["asset pricing", "no arbitrage", "risk-neutral measure", "linear algebra"],
-    "content": "This post explains the two Fundamental Theorems of Asset Pricing using geometry and linear algebra, avoiding probabilistic machinery. We consider a one-period binomial market with a stock and a risk-free bond. Each traded asset is a vector in payoff space. The price operator assigns a time 0 price to each payoff vector. The First FTAP states: a market admits no arbitrage if and only if there exists a risk-neutral pricing measure. The Second FTAP states: in a complete market there is exactly one risk-neutral pricing measure; in an incomplete market there are many."
-  },
-  {
-    "title": "Quadratic Variation: The Most Important Concept in Stochastic Calculus",
-    "permalink": "/posts/quadratic-variation/",
-    "date": "7 Sep 2025",
-    "summary": "Quadratic variation is what differentiates stochastic calculus from ordinary calculus — and understanding it makes everything else stop looking like magic.",
-    "tags": ["stochastic calculus", "Brownian motion", "Itô calculus"],
-    "content": "Quadratic Variation is what differentiates stochastic calculus from ordinary calculus. In ordinary calculus, the paths of functions are smooth. In stochastic calculus, the paths of Brownian motion are rough: no matter how far you zoom in, the curve remains jagged and unpredictable. This persistent roughness is exactly what quadratic variation measures. For Brownian motion the increments are normally distributed with variance delta t. The quadratic variation is deterministic: [W]_T = T. The path is wild, but the accumulated roughness ticks forward like clockwork. In Itô calculus this gives (dW_t)^2 = dt, the notational backbone of Itô calculus and the reason Itô's Lemma exists. Quadratic variation explains why Brownian motion is rough, why stochastic integrals make sense, why martingales behave as they do, and why measure changes work. Strip it away and the entire machinery of stochastic calculus collapses."
-  },
-  {
-    "title": "Jane Street Puzzle — November 2024 — Beside the Point",
-    "permalink": "/posts/jane-street-nov-2024/",
-    "date": "3 Dec 2024",
-    "summary": "A detailed solution to Jane Street's \"Beside the Point\" puzzle: finding the probability that two random points in a unit square are equidistant from some point on the bottom edge.",
-    "tags": ["probability", "geometry", "Jane Street", "integration"],
-    "content": "The required probability is obtained by solving a quadruple integral over the unit square. Using the rotational and reflection symmetry of the square, the integral simplifies to an 8x factor over one-eighth of the domain. The inner integrals are solved analytically by deriving the upper and lower bounds U(x,y,a) and L(x,y,a) of the valid b range for a given blue point (x,y) and red point x-coordinate a. The conditional probability for a given (x,y) is analytically expressed in terms of arcsin. Numerical integration over the reduced domain yields 0.06142594735478852, and scaling by 8 gives the final answer 0.49140757883830816."
+    "title": "Jane Street Puzzle — February 2024 — Some Off Square",
+    "permalink": "/posts/jane-street-feb-2024/",
+    "date": "26 May 2024",
+    "summary": "An alternative solution to Jane Street's \"Some Off Square\" puzzle: finding the exact probability that a circle defined by two random points inside a unit square extends beyond the square.",
+    "tags": [
+      "probability",
+      "geometry",
+      "Jane Street",
+      "integration"
+    ],
+    "content": "A circle is defined by two uniformly random points inside a unit square as its diameter. We find the probability that the circle extends outside the square. The key insight is a simplified problem: given a point P at distance x from a line and a diameter angle theta, the critical diameter for tangency is s = 2x/(1+sin(theta)). Extending to a square, the critical diameter is the minimum over all four sides. The probability is 1 minus a four-dimensional integral, which by symmetry reduces to a simpler form. After a variable substitution, the integral evaluates exactly to 1 - pi/6."
   },
   {
     "title": "Jane Street Puzzle — March 2023 — Robot Long Jump",
     "permalink": "/posts/jane-street-mar-2023/",
     "date": "14 Aug 2024",
     "summary": "A detailed solution to Jane Street's \"Robot Long Jump\" puzzle: deriving the optimal threshold strategy for two competing robots and the probability of scoring zero.",
-    "tags": ["probability", "game theory", "Jane Street", "Nash equilibrium"],
+    "tags": [
+      "probability",
+      "game theory",
+      "Jane Street",
+      "Nash equilibrium"
+    ],
     "content": "The optimal strategy for each robot is a threshold t: wait below t, jump from any position above t. The probability of scoring zero starting from position x given threshold t satisfies a recursive integral equation, which solves to z(x|t) = 1 - (1-t)e^(t-x). The overall probability of scoring zero is m(t) = 1 - (1-t)e^t. A non-zero score is J+U where J~Uniform[t,1] and U~Uniform[0,1], giving a trapezoidal distribution. Assuming a Nash equilibrium where both robots use the same threshold and the robot is indifferent between Jump and Wait at t, we derive the equation (t^3 - 3t + 2)e^t = 3t. Solving numerically gives t approximately 0.416195355, and the probability of scoring zero is approximately 0.114845886."
   },
   {
-    "title": "Jane Street Puzzle — February 2024 — Some Off Square",
-    "permalink": "/posts/jane-street-feb-2024/",
-    "date": "26 May 2024",
-    "summary": "An alternative solution to Jane Street's \"Some Off Square\" puzzle: finding the exact probability that a circle defined by two random points inside a unit square extends beyond the square.",
-    "tags": ["probability", "geometry", "Jane Street", "integration"],
-    "content": "A circle is defined by two uniformly random points inside a unit square as its diameter. We find the probability that the circle extends outside the square. The key insight is a simplified problem: given a point P at distance x from a line and a diameter angle theta, the critical diameter for tangency is s = 2x/(1+sin(theta)). Extending to a square, the critical diameter is the minimum over all four sides. The probability is 1 minus a four-dimensional integral, which by symmetry reduces to a simpler form. After a variable substitution, the integral evaluates exactly to 1 - pi/6."
-  }
-]: wait below t, jump from any position above t. The probability of scoring zero starting from position x given threshold t satisfies a recursive integral equation, which solves to z(x|t) = 1 - (1-t)e^(t-x). The overall probability of scoring zero is m(t) = 1 - (1-t)e^t. A non-zero score is J+U where J~Uniform[t,1] and U~Uniform[0,1], giving a trapezoidal distribution. Assuming a Nash equilibrium where both robots use the same threshold and the robot is indifferent between Jump and Wait at t, we derive the equation (t^3 - 3t + 2)e^t = 3t. Solving numerically gives t approximately 0.416195355, and the probability of scoring zero is approximately 0.114845886."
+    "title": "Jane Street Puzzle — November 2024 — Beside the Point",
+    "permalink": "/posts/jane-street-nov-2024/",
+    "date": "3 Dec 2024",
+    "summary": "A detailed solution to Jane Street's \"Beside the Point\" puzzle: finding the probability that two random points in a unit square are equidistant from some point on the bottom edge.",
+    "tags": [
+      "probability",
+      "geometry",
+      "Jane Street",
+      "integration"
+    ],
+    "content": "The required probability is obtained by solving a quadruple integral over the unit square. Using the rotational and reflection symmetry of the square, the integral simplifies to an 8x factor over one-eighth of the domain. The inner integrals are solved analytically by deriving the upper and lower bounds U(x,y,a) and L(x,y,a) of the valid b range for a given blue point (x,y) and red point x-coordinate a. The conditional probability for a given (x,y) is analytically expressed in terms of arcsin. Numerical integration over the reduced domain yields 0.06142594735478852, and scaling by 8 gives the final answer 0.49140757883830816."
+  },
+  {
+    "title": "Quadratic Variation: The Most Important Concept in Stochastic Calculus",
+    "permalink": "/posts/quadratic-variation/",
+    "date": "7 Sep 2025",
+    "summary": "Quadratic variation is what differentiates stochastic calculus from ordinary calculus — and understanding it makes everything else stop looking like magic.",
+    "tags": [
+      "stochastic calculus",
+      "Brownian motion",
+      "Itô calculus"
+    ],
+    "content": "Quadratic Variation is what differentiates stochastic calculus from ordinary calculus. In ordinary calculus, the paths of functions are smooth. In stochastic calculus, the paths of Brownian motion are rough: no matter how far you zoom in, the curve remains jagged and unpredictable. This persistent roughness is exactly what quadratic variation measures. For Brownian motion the increments are normally distributed with variance delta t. The quadratic variation is deterministic: [W]_T = T. The path is wild, but the accumulated roughness ticks forward like clockwork. In Itô calculus this gives (dW_t)^2 = dt, the notational backbone of Itô calculus and the reason Itô's Lemma exists. Quadratic variation explains why Brownian motion is rough, why stochastic integrals make sense, why martingales behave as they do, and why measure changes work. Strip it away and the entire machinery of stochastic calculus collapses."
+  },
+  {
+    "title": "The Fundamental Theorems of Asset Pricing: A Geometric Explanation",
+    "permalink": "/posts/fundamental-theorems-asset-pricing/",
+    "date": "1 Jan 2026",
+    "summary": "The two Fundamental Theorems of Asset Pricing explained through geometry and linear algebra, avoiding probabilistic machinery.",
+    "tags": [
+      "asset pricing",
+      "no arbitrage",
+      "risk-neutral measure",
+      "linear algebra"
+    ],
+    "content": "This post explains the two Fundamental Theorems of Asset Pricing using geometry and linear algebra, avoiding probabilistic machinery. We consider a one-period binomial market with a stock and a risk-free bond. Each traded asset is a vector in payoff space. The price operator assigns a time 0 price to each payoff vector. The First FTAP states: a market admits no arbitrage if and only if there exists a risk-neutral pricing measure. The Second FTAP states: in a complete market there is exactly one risk-neutral pricing measure; in an incomplete market there are many."
   }
 ]

@@ -1,0 +1,17 @@
+title: "Jane Street Puzzle — March 2023 — Robot Long Jump"
+date: "14 Aug 2024"
+date_iso: "2024-08-14"
+reading_time: 7
+description: "A detailed solution to Jane Street's March 2023 puzzle 'Robot Long Jump': finding the optimal threshold strategy and probability of scoring zero in a two-robot long jump competition."
+summary: "A detailed solution to Jane Street's \"Robot Long Jump\" puzzle: deriving the optimal threshold strategy for two competing robots and the probability of scoring zero."
+tags:
+  - probability
+  - game theory
+  - Jane Street
+  - Nash equilibrium
+toc:
+  - {id: zero-probability, label: "Probability of Scoring Zero"}
+  - {id: nonzero-score, label: "Non-Zero Score Distribution"}
+  - {id: optimal-threshold, label: "Optimal Threshold"}
+  - {id: answer, label: "Answer"}
+search_content: "The optimal strategy for each robot is a threshold t: wait below t, jump from any position above t. The probability of scoring zero starting from position x given threshold t satisfies a recursive integral equation, which solves to z(x|t) = 1 - (1-t)e^(t-x). The overall probability of scoring zero is m(t) = 1 - (1-t)e^t. A non-zero score is J+U where J~Uniform[t,1] and U~Uniform[0,1], giving a trapezoidal distribution. Assuming a Nash equilibrium where both robots use the same threshold and the robot is indifferent between Jump and Wait at t, we derive the equation (t^3 - 3t + 2)e^t = 3t. Solving numerically gives t approximately 0.416195355, and the probability of scoring zero is approximately 0.114845886."

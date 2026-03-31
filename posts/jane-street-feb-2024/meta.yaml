@@ -1,0 +1,16 @@
+title: "Jane Street Puzzle — February 2024 — Some Off Square"
+date: "26 May 2024"
+date_iso: "2024-05-26"
+reading_time: 6
+description: "An alternative solution to Jane Street's February 2024 puzzle 'Some Off Square': finding the probability that a circle defined by two random points inside a square extends beyond the square."
+summary: "An alternative solution to Jane Street's \"Some Off Square\" puzzle: finding the exact probability that a circle defined by two random points inside a unit square extends beyond the square."
+tags:
+  - probability
+  - geometry
+  - Jane Street
+  - integration
+toc:
+  - {id: simplified, label: "Simplified Problem"}
+  - {id: extended, label: "Extended Problem"}
+  - {id: solution, label: "Solution"}
+search_content: "A circle is defined by two uniformly random points inside a unit square as its diameter. We find the probability that the circle extends outside the square. The key insight is a simplified problem: given a point P at distance x from a line and a diameter angle theta, the critical diameter for tangency is s = 2x/(1+sin(theta)). Extending to a square, the critical diameter is the minimum over all four sides. The probability is 1 minus a four-dimensional integral, which by symmetry reduces to a simpler form. After a variable substitution, the integral evaluates exactly to 1 - pi/6."

@@ -1,0 +1,17 @@
+title: "Jane Street Puzzle — November 2024 — Beside the Point"
+date: "3 Dec 2024"
+date_iso: "2024-12-03"
+reading_time: 8
+description: "A detailed solution to Jane Street's November 2024 puzzle 'Beside the Point': finding the probability that two random points in a square are equidistant from some point on the bottom edge."
+summary: "A detailed solution to Jane Street's \"Beside the Point\" puzzle: finding the probability that two random points in a unit square are equidistant from some point on the bottom edge."
+tags:
+  - probability
+  - geometry
+  - Jane Street
+  - integration
+toc:
+  - {id: formulation, label: "Problem Formulation"}
+  - {id: symmetry, label: "Symmetry Reduction"}
+  - {id: analytical, label: "Analytical Solution"}
+  - {id: answer, label: "Answer"}
+search_content: "The required probability is obtained by solving a quadruple integral over the unit square. Using the rotational and reflection symmetry of the square, the integral simplifies to an 8x factor over one-eighth of the domain. The inner integrals are solved analytically by deriving the upper and lower bounds U(x,y,a) and L(x,y,a) of the valid b range for a given blue point (x,y) and red point x-coordinate a. The conditional probability for a given (x,y) is analytically expressed in terms of arcsin. Numerical integration over the reduced domain yields 0.06142594735478852, and scaling by 8 gives the final answer 0.49140757883830816."

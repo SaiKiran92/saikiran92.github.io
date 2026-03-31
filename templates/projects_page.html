@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
-  <link rel="stylesheet" href="style.css">
-  <title>Projects — Tales of the Fat Tails</title>
-  
-  
+{% extends "base.html" %}
+
+{% block title %}Projects — Tales of the Fat Tails{% endblock %}
+
+{% block extra_style %}
   <style>
     .project-entry {
       padding: 1rem 0 1rem 1rem;
@@ -23,13 +18,9 @@
     .project-entry h2 a:hover { color: var(--accent); }
     .project-entry p { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
   </style>
+{% endblock %}
 
-</head>
-<body>
-
-  <nav id="nav"></nav>
-
-  
+{% block content %}
   <div class="content">
     <h1>Projects</h1>
     <p style="font-size:0.88rem; color:var(--muted); font-style:italic;">To be added.</p>
@@ -41,13 +32,4 @@
     </div>
     -->
   </div>
-
-
-  <footer>© 2026 Sai Kiran Mayakuntla</footer>
-
-  
-  <script defer src="main.js"></script>
-  
-
-</body>
-</html>
+{% endblock %}
