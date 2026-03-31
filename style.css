@@ -285,7 +285,7 @@ nav {
 .post-nav-next:hover .post-nav-title { color: var(--accent); }
 
 .post-body figure { margin: 2rem auto; text-align: center; }
-.post-body figure img { max-width: 100%; border: 1px solid var(--border); border-radius: 4px; }
+.post-body figure img { max-width: 540px; width: 100%; border: 1px solid var(--border); border-radius: 4px; }
 .post-body figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 0.6rem; }
 
 footer {
