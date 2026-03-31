@@ -229,6 +229,8 @@ nav {
 }
 .post-body ol { padding-left: 1.4rem; margin-bottom: 1.2rem; }
 .post-body ol li { margin-bottom: 0.4rem; }
+.post-body a { color: var(--accent); text-decoration: none; }
+.post-body a:hover { text-decoration: underline; }
 .post-body strong { font-weight: 700; }
 .post-body em { font-style: italic; }
 .post-body img { max-width: 540px; width: 100%; height: auto; display: block; margin: 1.5rem auto; }
