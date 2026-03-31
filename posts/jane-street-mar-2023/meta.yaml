@@ -1,7 +1,6 @@
 title: "Jane Street Puzzle — March 2023 — Robot Long Jump"
 date: "14 Aug 2024"
 date_iso: "2024-08-14"
-reading_time: 7
 description: "A detailed solution to Jane Street's March 2023 puzzle 'Robot Long Jump': finding the optimal threshold strategy and probability of scoring zero in a two-robot long jump competition."
 summary: "A detailed solution to Jane Street's \"Robot Long Jump\" puzzle: deriving the optimal threshold strategy for two competing robots and the probability of scoring zero."
 tags:

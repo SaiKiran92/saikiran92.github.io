@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, os
+import json, os, re, math
 from datetime import datetime
 import yaml
 from jinja2 import Environment, FileSystemLoader
@@ -7,17 +7,28 @@ from jinja2 import Environment, FileSystemLoader
 SITE_ROOT = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader(os.path.join(SITE_ROOT, "templates")), autoescape=False)
 
+def compute_reading_time(html):
+    # Strip HTML tags, keeping all text content (including math notation)
+    text = re.sub(r'<[^>]+>', ' ', html)
+    words = len(text.split())
+    return max(1, math.ceil(words / 200))
+
 def load_posts():
     posts = []
     posts_dir = os.path.join(SITE_ROOT, "posts")
     for slug in os.listdir(posts_dir):
         meta_path = os.path.join(posts_dir, slug, "meta.yaml")
-        if not os.path.exists(meta_path):
+        content_path = os.path.join(posts_dir, slug, "content.html")
+        if not os.path.exists(meta_path) or not os.path.exists(content_path):
             continue
         with open(meta_path, encoding="utf-8") as f:
             meta = yaml.safe_load(f)
+        with open(content_path, encoding="utf-8") as f:
+            content = f.read()
         meta["slug"] = slug
         meta["permalink"] = f"/posts/{slug}/"
+        meta["content"] = content
+        meta["reading_time"] = compute_reading_time(content)
         posts.append(meta)
     posts.sort(key=lambda p: datetime.strptime(p["date_iso"], "%Y-%m-%d"))
     for i, p in enumerate(posts):
@@ -28,9 +39,7 @@ def load_posts():
 def build_posts(posts):
     for post in posts:
         slug = post["slug"]
-        content_path = os.path.join(SITE_ROOT, "posts", slug, "content.html")
-        with open(content_path, encoding="utf-8") as f:
-            content = f.read()
+        content = post["content"]
         html = env.get_template("post.html").render(post=post, content=content, depth="../../")
         out_path = os.path.join(SITE_ROOT, "posts", slug, "index.html")
         with open(out_path, "w", encoding="utf-8") as f:

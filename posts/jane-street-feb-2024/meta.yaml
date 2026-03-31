@@ -1,7 +1,6 @@
 title: "Jane Street Puzzle — February 2024 — Some Off Square"
 date: "26 May 2024"
 date_iso: "2024-05-26"
-reading_time: 6
 description: "An alternative solution to Jane Street's February 2024 puzzle 'Some Off Square': finding the probability that a circle defined by two random points inside a square extends beyond the square."
 summary: "An alternative solution to Jane Street's \"Some Off Square\" puzzle: finding the exact probability that a circle defined by two random points inside a unit square extends beyond the square."
 tags:
