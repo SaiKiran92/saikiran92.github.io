@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../../style.css">
+  <title>Jane Street Puzzle — November 2024 — Beside the Point — Tales of the Fat Tails</title>
+  <meta name="description" content="A detailed solution to Jane Street's November 2024 puzzle 'Beside the Point': finding the probability that two random points in a square are equidistant from some point on the bottom edge." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Tales of the Fat Tails" />
+  <meta property="og:title" content="Jane Street Puzzle — November 2024 — Beside the Point" />
+  <meta property="og:description" content="A detailed solution to Jane Street's November 2024 puzzle 'Beside the Point': finding the probability that two random points in a square are equidistant from some point on the bottom edge." />
+  <meta property="og:url" content="https://saikiran92.github.io/posts/jane-street-nov-2024/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Jane Street Puzzle — November 2024 — Beside the Point" />
+  <meta name="twitter:description" content="A detailed solution to Jane Street's November 2024 puzzle 'Beside the Point': finding the probability that two random points in a square are equidistant from some point on the bottom edge." />
+  <style>
+    figure {
+      margin: 2rem auto;
+      text-align: center;
+    }
+    figure img {
+      max-width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    figcaption {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+    .figure-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav"></nav>
+
+  <div class="post-layout">
+
+    <aside class="toc-sidebar">
+      <div class="toc-sidebar-title">Contents</div>
+      <ul>
+        <li><a href="#formulation">Problem Formulation</a></li>
+        <li><a href="#symmetry">Symmetry Reduction</a></li>
+        <li><a href="#analytical">Analytical Solution</a></li>
+        <li><a href="#answer">Answer</a></li>
+      </ul>
+    </aside>
+
+    <div class="post-main">
+
+      <div class="post-header">
+        <h1 class="post-title">Jane Street Puzzle — November 2024 — Beside the Point</h1>
+        <div class="post-meta">Date: 3 Dec 2024 &nbsp;|&nbsp; 8 min read &nbsp;|&nbsp; Author: Sai Kiran Mayakuntla</div>
+      </div>
+
+      <div class="toc-mobile">
+        <button class="toc-mobile-btn" id="toc-toggle" aria-label="Contents">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="10" y2="18"/></svg>
+        </button>
+        <nav class="toc-mobile-panel" id="toc-panel">
+          <div class="toc-mobile-title">Contents</div>
+          <ul>
+            <li><a href="#formulation">Problem Formulation</a></li>
+            <li><a href="#symmetry">Symmetry Reduction</a></li>
+            <li><a href="#analytical">Analytical Solution</a></li>
+            <li><a href="#answer">Answer</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="post-body">
+
+        <p>See the Puzzle Statement <a href="#" title="TODO: add Jane Street puzzle URL">here</a>. And the official outline of the solution from Jane Street is <a href="#" title="TODO: add Jane Street solution URL">here</a>. I have a more detailed explanation of the solution below.</p>
+
+        <h2 id="formulation">Problem Formulation</h2>
+
+        <figure>
+          <!-- TODO: extract Figure 1 from the PDF and save as fig1.png -->
+          <div class="figure-placeholder">Figure 1 image — to be added</div>
+          <figcaption>Figure 1: Illustration of the problem statement.</figcaption>
+        </figure>
+
+        <p>Let us denote the blue and red points by $(x,y)$ and $(a,b)$, respectively. The required probability can be obtained by solving the following quadruple integral:</p>
+
+        $$\int_0^1 \int_0^1 \int_0^1 \int_0^1 M(x, y, a, b) \, db \, da \, dy \, dx$$
+
+        <p>where $M(x,y,a,b)$ is an indicator function, defined as:</p>
+
+        $$M(x, y, a, b) = \begin{cases} 1, & \text{if } \exists\, z \text{ s.t. } 0 \leq z \leq 1 \text{ and } \sqrt{(x-z)^2 + y^2} = \sqrt{(a-z)^2 + b^2} \\ 0, & \text{o/w} \end{cases}$$
+
+        <p>The above formulation is essentially a restatement of the problem in mathematical terms. It only assumes, without loss of generality, that the square is of size 1, with coordinates $(0,0)$ and $(1,1)$ on the diagonally opposite corners.</p>
+
+        <h2 id="symmetry">Symmetry Reduction</h2>
+
+        <figure>
+          <!-- TODO: extract Figure 2 from the PDF and save as fig2.png -->
+          <div class="figure-placeholder">Figure 2 image — to be added</div>
+          <figcaption>Figure 2: Symmetry of the square.</figcaption>
+        </figure>
+
+        <p>The outer two integrals can be slightly simplified using the rotational and reflection symmetry of the square:</p>
+
+        $$8 \times \int_0^{1/2} \int_0^{x} \int_0^1 \int_0^1 M(x, y, a, b) \, db \, da \, dy \, dx$$
+
+        <h2 id="analytical">Analytical Solution</h2>
+
+        <p>Keep in mind that we only require the solution up to ten decimal places. Although a numerical approach can be used, we need to solve the inner integrals analytically to ensure the solution can be approximated within a reasonable amount of time. Therefore, we will first derive an analytical expression for the conditional probability for a given blue point $(x,y)$. Once this is done, we can apply a numerical technique to compute the required probability by integrating over $x$ and $y$.</p>
+
+        <p>Let us first calculate the conditional probability corresponding to a given $(x,y,a)$, i.e. we know the X-coordinate $a$ of the red point, in addition to the blue point $(x,y)$. A point $(a,b)$ satisfies the given property of the red point if and only if:</p>
+
+        $$\exists\, z \text{ s.t. } 0 \leq z \leq 1 \text{ and } b^2 = (x^2 - a^2 + y^2) - 2z(x - a)$$
+
+        <p>Since the red point must lie within the square, we also have: $0 \leq b \leq 1$. But note from the above condition that $b$ is only real when:</p>
+
+        $$z \leq \frac{x + a}{2} + \frac{y^2}{2(x - a)}$$
+
+        <p>So, there need not always be a possible red point corresponding to every $z \in [0,1]$. But because $b$ is a continuous function $z$, given $(x,y,a)$, these points form a contiguous interval where they do exist, and the length of this interval represents the conditional probability given $(x,y,a)$. Furthermore:</p>
+
+        $$\frac{db}{dz} = \frac{2(a - x)}{b}$$
+
+        <p>Thus, $b$ is monotonically decreasing with respect to $z$ when $a \leq x$, and monotonically increasing when $a > x$. By evaluating $b$ at the extremes (i.e., $z=0$ and $z=1$), we observe that the upper bounds of $b$ never reach 1 under the conditions $0 \leq x \leq 0.5$, $0 \leq y \leq x$, and $0 \leq a \leq 1$. Thus, the upper bound of the interval of $b$ given $(x,y,a)$ will be:</p>
+
+        $$U(x, y, a) = \begin{cases} \sqrt{x^2 - a^2 + y^2}, & \text{if } a \leq x \\[6pt] \sqrt{(1-x)^2 - (1-a)^2 + y^2}, & \text{o/w} \end{cases}$$
+
+        <p>Unlike the upper bound of $b$, its lower bound may be 0 for some values of $(x,y,a)$. Consider the case when $0 \leq a \leq x$. As $b$ decreases with $z$, it is possible that the lower bound is given when $z=1$, as:</p>
+
+        $$\sqrt{(1-x)^2 - (1-a)^2 + y^2}$$
+
+        <p>However, the above is a real number only when:</p>
+
+        $$a < \left[1 - \sqrt{(1-x)^2 + y^2}\right]$$
+
+        <p>Thus, we have that:</p>
+
+        $$L(x, y, a) = \begin{cases} 0, & \text{if } 0 \leq a \leq \left[1 - \sqrt{(1-x)^2 + y^2}\right] \\[6pt] \sqrt{(1-x)^2 - (1-a)^2 + y^2}, & \text{if } \left[1 - \sqrt{(1-x)^2 + y^2}\right] < a \leq x \end{cases}$$
+
+        <p>Applying a similar logic for when $x &lt; a \leq 1$, we have:</p>
+
+        $$L(x, y, a) = \begin{cases} 0, & \text{if } 0 \leq a \leq \left[1 - \sqrt{(1-x)^2 + y^2}\right] \\[6pt] \sqrt{(1-x)^2 - (1-a)^2 + y^2}, & \text{if } \left[1 - \sqrt{(1-x)^2 + y^2}\right] < a \leq x \\[6pt] \sqrt{x^2 - a^2 + y^2}, & \text{if } x < a \leq \sqrt{x^2 + y^2} \\[6pt] 0, & \text{o/w (i.e. } \sqrt{x^2 + y^2} < a \leq 1) \end{cases}$$
+
+        <figure>
+          <!-- TODO: extract Figure 3 from the PDF and save as fig3.png -->
+          <div class="figure-placeholder">Figure 3 image — to be added</div>
+          <figcaption>Figure 3: $L(x,y,a)$ for all $a \in [0,1]$.</figcaption>
+        </figure>
+
+        <h2 id="answer">Answer</h2>
+
+        <p>Thus, the required conditional probability for a given blue point $(x,y)$ can be given by the sum of a bunch of double integrals, which can be analytically solved as:</p>
+
+        $$(x^2 + y^2) \times \left[\arcsin\!\left(\frac{x}{\sqrt{x^2 + y^2}}\right) - \frac{\pi}{4}\right] + \left((1-x)^2 + y^2\right) \times \left[\arcsin\!\left(\frac{1-x}{\sqrt{(1-x)^2 + y^2}}\right) - \frac{\pi}{4}\right] + y$$
+
+        <p>Integrating this numerically over $0 \leq x \leq 0.5$, $0 \leq y \leq x$, which forms one-eighth of the area of the square, we get $0.06142594735478852$. And scaling it by 8, we get the probability we want as: $0.49140757883830816$.</p>
+
+        <nav class="post-nav">
+          <a class="post-nav-prev" href="/posts/jane-street-mar-2023/">
+            <span class="post-nav-label">← Previous</span>
+            <span class="post-nav-title">Jane Street Puzzle — March 2023 — Robot Long Jump</span>
+          </a>
+          <a class="post-nav-next" href="/posts/quadratic-variation/">
+            <span class="post-nav-label">Next →</span>
+            <span class="post-nav-title">Quadratic Variation: The Most Important Concept in Stochastic Calculus</span>
+          </a>
+        </nav>
+
+        <div class="share-links">
+          <!-- Twitter/X -->
+          <a id="share-twitter" target="_blank" rel="noopener" title="Share on Twitter / X">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.257 5.629 5.907-5.629Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- LinkedIn -->
+          <a id="share-linkedin" target="_blank" rel="noopener" title="Share on LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <!-- Reddit -->
+          <a id="share-reddit" target="_blank" rel="noopener" title="Share on Reddit">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a id="share-facebook" target="_blank" rel="noopener" title="Share on Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <button id="share-copy" title="Copy link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>© 2026 Sai Kiran Mayakuntla</footer>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../../main.js"></script>
+
+</body>
+</html>

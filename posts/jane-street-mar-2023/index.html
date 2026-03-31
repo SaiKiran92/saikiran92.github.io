@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../../style.css">
+  <title>Jane Street Puzzle — March 2023 — Robot Long Jump — Tales of the Fat Tails</title>
+  <meta name="description" content="A detailed solution to Jane Street's March 2023 puzzle 'Robot Long Jump': finding the optimal threshold strategy and probability of scoring zero in a two-robot long jump competition." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Tales of the Fat Tails" />
+  <meta property="og:title" content="Jane Street Puzzle — March 2023 — Robot Long Jump" />
+  <meta property="og:description" content="A detailed solution to Jane Street's March 2023 puzzle 'Robot Long Jump': finding the optimal threshold strategy and probability of scoring zero in a two-robot long jump competition." />
+  <meta property="og:url" content="https://saikiran92.github.io/posts/jane-street-mar-2023/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Jane Street Puzzle — March 2023 — Robot Long Jump" />
+  <meta name="twitter:description" content="A detailed solution to Jane Street's March 2023 puzzle 'Robot Long Jump': finding the optimal threshold strategy and probability of scoring zero in a two-robot long jump competition." />
+</head>
+<body>
+
+  <nav id="nav"></nav>
+
+  <div class="post-layout">
+
+    <aside class="toc-sidebar">
+      <div class="toc-sidebar-title">Contents</div>
+      <ul>
+        <li><a href="#zero-probability">Probability of Scoring Zero</a></li>
+        <li><a href="#nonzero-score">Non-Zero Score Distribution</a></li>
+        <li><a href="#optimal-threshold">Optimal Threshold</a></li>
+        <li><a href="#answer">Answer</a></li>
+      </ul>
+    </aside>
+
+    <div class="post-main">
+
+      <div class="post-header">
+        <h1 class="post-title">Jane Street Puzzle — March 2023 — Robot Long Jump</h1>
+        <div class="post-meta">Date: 14 Aug 2024 &nbsp;|&nbsp; 7 min read &nbsp;|&nbsp; Author: Sai Kiran Mayakuntla</div>
+      </div>
+
+      <div class="toc-mobile">
+        <button class="toc-mobile-btn" id="toc-toggle" aria-label="Contents">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="10" y2="18"/></svg>
+        </button>
+        <nav class="toc-mobile-panel" id="toc-panel">
+          <div class="toc-mobile-title">Contents</div>
+          <ul>
+            <li><a href="#zero-probability">Probability of Scoring Zero</a></li>
+            <li><a href="#nonzero-score">Non-Zero Score Distribution</a></li>
+            <li><a href="#optimal-threshold">Optimal Threshold</a></li>
+            <li><a href="#answer">Answer</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="post-body">
+
+        <p>See the puzzle statement <a href="#" title="TODO: add Jane Street puzzle URL">here</a>. An outline of the solution is given by Jane Street <a href="#" title="TODO: add Jane Street solution URL">here</a>. I will provide a detailed explanation of this below.</p>
+
+        <p><strong>Solution:</strong></p>
+
+        <p>I'll start with an educated guess about the type of optimal strategy each robot might choose.</p>
+
+        <p>Guess 1: The optimal strategy for each robot is to wait until it reaches a certain threshold $t$, and then jump from any position beyond $t$.</p>
+
+        <p>Firstly, we're dealing with binary (Wait/Jump) decisions. And secondly, the robots must consider the trade-off between reaching higher scores, and the probability of crossing the takeoff point and scoring $0$. So, I hope you see that this guess is sufficiently motivated.</p>
+
+        <h2 id="zero-probability">Probability of a Robot Scoring Zero, Given Threshold t</h2>
+
+        <p>Let $z(x|t)$ denote the probability of a robot scoring zero, given its current position $x$ and threshold $t$. This probability must satisfy the following recursive relation:</p>
+
+        $$z(x|t) = \begin{cases} x + \displaystyle\int_x^1 z(y|t)\,dy, & \text{if } 0 \leq x \leq t \\[6pt] 0, & \text{if } t < x \leq 1 \end{cases}$$
+
+        <p>According to its strategy, the robot chooses to "Wait" from position $x$ (where $x \leq t$). Its next move is drawn uniformly randomly from $0$ to $1$. Hence, the robot crosses the takeoff point (i.e. $1$) with probability $x$. And with probability $(1 - x)$, it ends up (uniformly randomly) at some position between $x$ and $1$, say $y$. The decision making process then repeats from position $y$. This reasoning leads to the above-mentioned recursive relation.</p>
+
+        <p>Beyond $t$, the robot chooses to "Jump" and will always achieve a positive score.</p>
+
+        <p>Looking back at the first case, the upper limit of the integral can be further restricted to $t$, as $z(x|t)$ is anyway $0$ beyond that point. Thus, we have:</p>
+
+        $$z(x|t) = \begin{cases} x + \displaystyle\int_x^t z(y|t)\,dy, & \text{if } 0 \leq x \leq t \\[6pt] 0, & \text{if } t < x \leq 1 \end{cases}$$
+
+        <p>Taking a derivative with respect $x$ on both sides (for the first case) and using the boundary condition: $m(t|t) = t$, we can derive that:</p>
+
+        $$z(x|t) = \begin{cases} 1 - (1-t)e^{t-x}, & \text{if } 0 \leq x \leq t \\[6pt] 0, & \text{if } t < x \leq 1 \end{cases}$$
+
+        <p>And we finally have the probability $m(t)$ of the robot scoring zero in any attempt as:</p>
+
+        $$m(t) = z(0|t) = 1 - (1-t)e^t$$
+
+        <h2 id="nonzero-score">Conditional Probability of a Robot's Non-Zero Score, Given Threshold t</h2>
+
+        <p>A robot's non-zero score can be expressed as the sum of two random variables: Its jump position $J$, and a standard uniform random variable $U$. From any position $x$ before the threshold $t$, the robot is equally likely to land anywhere between $t$ and $1$. Hence, the non-zero score is actually the sum of two uniformly distributed random variables, $J$ and $U$, with supports, $[t,1]$ and $[0,1]$, respectively. This sum follows a trapezoidal-shaped distribution, with the following CDF:</p>
+
+        $$P(s|t) = \begin{cases} \dfrac{(x-t)^2}{2(1-t)}, & \text{if } t \leq x < 1 \\[10pt] 1, & \text{if } t \leq x < (1+t) \\[6pt] 1 - \dfrac{(2-x)^2}{2(1-t)}, & \text{if } (1+t) \leq x \leq 2 \end{cases}$$
+
+        <h2 id="optimal-threshold">Calculating the Optimal Threshold t</h2>
+
+        <p>Guess 2: The optimal thresholds chosen by the two competing robots are equal.</p>
+
+        <p>Given the symmetry of the competition, this is a reasonable guess. Recall that the robots compete in each attempt "without knowing the other's result".</p>
+
+        <p>Guess 3: At the threshold position $t$, the robot has an equal probability of winning, whether it chooses to "Jump" or "Wait".</p>
+
+        <p>I make this guess/assumption purely to simplify the computation. This is clearly a Nash Equilibrium problem, but a rigorous approach could be challenging algebraically. Assuming the probability function is "well-behaved" in some sense, we can hopefully work with this. If it turns out to be incorrect, we can always cross-validate the solution later.</p>
+
+        <p>Now, given this setting, consider a robot positioned exactly at the threshold $t$. Its probability of winning if it chooses to Jump is:</p>
+
+        $$m(t) + (1 - m(t)) \int_t^{1+t} P(y|t)\,dy$$
+
+        <p>The two terms correspond to the scenarios where the other robot scores zero and non-zero values, respectively. In the latter case, the first robot's score is uniformly distributed between $t$ and $(1+t)$. We therefore integrate over the CDF of the non-zero score to determine the first robot's winning probability.</p>
+
+        <p>Similarly, the winning probability of the first robot, if it instead chose to Wait at position $t$ is:</p>
+
+        $$\frac{tm(t)}{2} + (1-t)m(t) + (1 - m(t))(1-t) \int_t^1 \int_0^1 P(y + u)\,dy\,du$$
+
+        <p>This equation accounts for all possible combinations of zero and non-zero scores for the two robots. The double integral represents the probability of the first robot winning, given that both achieve non-zero scores. By applying the symmetry argument again, we can (thankfully!) conclude that this probability is equal to $0.5$. We can thus simplify it to:</p>
+
+        $$\frac{1 - t + m(t)}{2}$$
+
+        <p>Equating the two probabilities and performing the necessary algebraic manipulations, we obtain:</p>
+
+        $$(t^3 - 3t + 2)e^t = 3t$$
+
+        <p>Using an appropriate fixed-point algorithm, we solve for the threshold, which is approximately $0.416195355$.</p>
+
+        <h2 id="answer">Calculating the Desired Probability</h2>
+
+        <p>We can calculate the probability of scoring zero on the first attempt by substituting the optimal threshold into $m(t)$, which yields approximately $0.114845886$.</p>
+
+        <nav class="post-nav">
+          <a class="post-nav-next" href="/posts/jane-street-nov-2024/">
+            <span class="post-nav-label">Next →</span>
+            <span class="post-nav-title">Jane Street Puzzle — November 2024 — Beside the Point</span>
+          </a>
+        </nav>
+
+        <div class="share-links">
+          <!-- Twitter/X -->
+          <a id="share-twitter" target="_blank" rel="noopener" title="Share on Twitter / X">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.257 5.629 5.907-5.629Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- LinkedIn -->
+          <a id="share-linkedin" target="_blank" rel="noopener" title="Share on LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <!-- Reddit -->
+          <a id="share-reddit" target="_blank" rel="noopener" title="Share on Reddit">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a id="share-facebook" target="_blank" rel="noopener" title="Share on Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <button id="share-copy" title="Copy link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>© 2026 Sai Kiran Mayakuntla</footer>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../../main.js"></script>
+
+</body>
+</html>
