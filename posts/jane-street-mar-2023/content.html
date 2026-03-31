@@ -1,10 +1,8 @@
         <p>See the puzzle statement <a href="#" title="TODO: add Jane Street puzzle URL">here</a>. An outline of the solution is given by Jane Street <a href="#" title="TODO: add Jane Street solution URL">here</a>. I will provide a detailed explanation of this below.</p>
 
-        <p><strong>Solution:</strong></p>
-
         <p>I'll start with an educated guess about the type of optimal strategy each robot might choose.</p>
 
-        <p>Guess 1: The optimal strategy for each robot is to wait until it reaches a certain threshold $t$, and then jump from any position beyond $t$.</p>
+        <div class="theorem">Guess 1: The optimal strategy for each robot is to wait until it reaches a certain threshold $t$, and then jump from any position beyond $t$.</div>
 
         <p>Firstly, we're dealing with binary (Wait/Jump) decisions. And secondly, the robots must consider the trade-off between reaching higher scores, and the probability of crossing the takeoff point and scoring $0$. So, I hope you see that this guess is sufficiently motivated.</p>
 
@@ -38,11 +36,11 @@
 
         <h2 id="optimal-threshold">Calculating the Optimal Threshold t</h2>
 
-        <p>Guess 2: The optimal thresholds chosen by the two competing robots are equal.</p>
+        <div class="theorem">Guess 2: The optimal thresholds chosen by the two competing robots are equal.</div>
 
         <p>Given the symmetry of the competition, this is a reasonable guess. Recall that the robots compete in each attempt "without knowing the other's result".</p>
 
-        <p>Guess 3: At the threshold position $t$, the robot has an equal probability of winning, whether it chooses to "Jump" or "Wait".</p>
+        <div class="theorem">Guess 3: At the threshold position $t$, the robot has an equal probability of winning, whether it chooses to "Jump" or "Wait".</div>
 
         <p>I make this guess/assumption purely to simplify the computation. This is clearly a Nash Equilibrium problem, but a rigorous approach could be challenging algebraically. Assuming the probability function is "well-behaved" in some sense, we can hopefully work with this. If it turns out to be incorrect, we can always cross-validate the solution later.</p>
 

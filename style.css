@@ -220,12 +220,18 @@ nav {
   scroll-margin-top: 80px;
   color: var(--fg);
 }
+.post-body .theorem,
+.post-body .problem-statement {
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem 1rem;
+  margin: 1.5rem 0;
+}
 .post-body .theorem {
   font-style: italic;
   color: var(--muted);
-  margin: 1rem 0 1.5rem;
-  padding: 0.75rem 1rem;
-  border-left: 3px solid var(--accent);
+}
+.post-body .problem-statement {
+  font-size: 0.93rem;
 }
 .post-body ol { padding-left: 1.4rem; margin-bottom: 1.2rem; }
 .post-body ol li { margin-bottom: 0.4rem; }
@@ -281,7 +287,6 @@ nav {
 .post-body figure { margin: 2rem auto; text-align: center; }
 .post-body figure img { max-width: 100%; border: 1px solid var(--border); border-radius: 4px; }
 .post-body figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 0.6rem; }
-.problem-statement { border-left: 3px solid var(--accent); padding: 0.8rem 1rem; margin: 1.5rem 0; font-size: 0.93rem; }
 
 footer {
   border-top: 1px solid var(--border);
