@@ -30,5 +30,15 @@
     "summary": "A detailed solution to Jane Street's \"Robot Long Jump\" puzzle: deriving the optimal threshold strategy for two competing robots and the probability of scoring zero.",
     "tags": ["probability", "game theory", "Jane Street", "Nash equilibrium"],
     "content": "The optimal strategy for each robot is a threshold t: wait below t, jump from any position above t. The probability of scoring zero starting from position x given threshold t satisfies a recursive integral equation, which solves to z(x|t) = 1 - (1-t)e^(t-x). The overall probability of scoring zero is m(t) = 1 - (1-t)e^t. A non-zero score is J+U where J~Uniform[t,1] and U~Uniform[0,1], giving a trapezoidal distribution. Assuming a Nash equilibrium where both robots use the same threshold and the robot is indifferent between Jump and Wait at t, we derive the equation (t^3 - 3t + 2)e^t = 3t. Solving numerically gives t approximately 0.416195355, and the probability of scoring zero is approximately 0.114845886."
+  },
+  {
+    "title": "Jane Street Puzzle — February 2024 — Some Off Square",
+    "permalink": "/posts/jane-street-feb-2024/",
+    "date": "26 May 2024",
+    "summary": "An alternative solution to Jane Street's \"Some Off Square\" puzzle: finding the exact probability that a circle defined by two random points inside a unit square extends beyond the square.",
+    "tags": ["probability", "geometry", "Jane Street", "integration"],
+    "content": "A circle is defined by two uniformly random points inside a unit square as its diameter. We find the probability that the circle extends outside the square. The key insight is a simplified problem: given a point P at distance x from a line and a diameter angle theta, the critical diameter for tangency is s = 2x/(1+sin(theta)). Extending to a square, the critical diameter is the minimum over all four sides. The probability is 1 minus a four-dimensional integral, which by symmetry reduces to a simpler form. After a variable substitution, the integral evaluates exactly to 1 - pi/6."
+  }
+]: wait below t, jump from any position above t. The probability of scoring zero starting from position x given threshold t satisfies a recursive integral equation, which solves to z(x|t) = 1 - (1-t)e^(t-x). The overall probability of scoring zero is m(t) = 1 - (1-t)e^t. A non-zero score is J+U where J~Uniform[t,1] and U~Uniform[0,1], giving a trapezoidal distribution. Assuming a Nash equilibrium where both robots use the same threshold and the robot is indifferent between Jump and Wait at t, we derive the equation (t^3 - 3t + 2)e^t = 3t. Solving numerically gives t approximately 0.416195355, and the probability of scoring zero is approximately 0.114845886."
   }
 ]
