@@ -1,0 +1,81 @@
+      <p><i>"Do you recall the Black-Scholes formula?"</i></p>
+
+      <p>If you've interviewed for a quant role, you've probably heard this. I have. And every time, I think: this is a slightly unfair question. Black-Scholes isn't a formula you can easily carry around in your head. It has six variables, each appearing multiple times, tangled up with an exponential, a logarithm, a square root, and two normal CDFs. Reciting it on demand, under interview pressure, is more a test of nerves than of understanding.</p>
+
+      <p>The derivation, though, is a different story. Given a basic comfort with stochastic calculus, the formula falls out in three steps, almost mechanically. Once you've derived it yourself, you never really need to memorise it again. I think every quant should do this at least once, pen on paper, as a kind of rite of passage.</p>
+
+      <p>This post walks through that derivation.</p>
+
+      <h2>Model Setup</h2>
+
+      <p>The Black-Scholes formula gives us the price of a European call option on an underlying stock. Here, we model the stock price \(S_t\) as a geometric Brownian motion:</p>
+
+      $$dS_t = \mu S_t \, dt + \sigma S_t \, dW_t$$
+
+      <p>\(\mu\) is the drift, \(\sigma > 0\) the volatility, and \(W_t\) a standard Brownian motion. Crucially, we assume the market is <b>arbitrage-free</b>: no riskless profit can be made. The model also assumes no dividends, no transaction costs, continuous trading, and a constant risk-free rate \(r\), though versions of the Black-Scholes formula can be derived where some of these are relaxed.</p>
+
+      <p>The call option pays \(\max(S_T - K, 0)\) at maturity \(T\), where \(K\) is the strike price. Our goal is to find the fair price of this payoff today.</p>
+
+      <h2>Step 1: Change to the Risk-Neutral Measure</h2>
+
+      <p>From the First Fundamental Theorem of Asset Pricing, an arbitrage-free market guarantees the existence of a <b>risk-neutral measure</b> \(\mathbb{Q}\). The SDE above describes the stock price under the real-world measure \(\mathbb{P}\): the distribution you would observe if you watched the stock evolve over time. The risk-neutral measure is different. It is an "imaginary" probability measure, but one under which the price of any derivative can be written simply as a discounted expectation:</p>
+
+      $$V = e^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[h(S_T)\right]$$
+
+      <p>So our task reduces to: find \(\mathbb{Q}\), and compute the expectation. This is where <b>Girsanov's Theorem</b> comes in. It tells us that if we define</p>
+
+      $$\widetilde{W}_t = W_t + \frac{\mu - r}{\sigma}t$$
+
+      <p>then \(\widetilde{W}_t\) is a standard Brownian motion under \(\mathbb{Q}\). The quantity \(\theta = (\mu - r)/\sigma\) is the <i>market price of risk</i>: the excess return per unit of volatility, which gets absorbed into the measure change. Substituting back, the stock price dynamics under \(\mathbb{Q}\) become:</p>
+
+      $$dS_t = r S_t \, dt + \sigma S_t \, d\widetilde{W}_t$$
+
+      <p>The drift \(\mu\) has been replaced by the risk-free rate \(r\). We are now working under \(\mathbb{Q}\).</p>
+
+      <h2>Step 2: The Distribution of \(S_T\) Under \(\mathbb{Q}\)</h2>
+
+      <p>Next, we determine the distribution of \(S_T\). We apply <b>Itô's Lemma</b> to \(f(S_t) = \ln S_t\) — the stochastic chain rule, which unlike the ordinary chain rule picks up an extra \(-\frac{1}{2}\sigma^2 dt\) term from the quadratic variation of the Brownian motion:</p>
+
+      $$d(\ln S_t) = \left(r - \tfrac{1}{2}\sigma^2\right)dt + \sigma \, d\widetilde{W}_t$$
+
+      <p>Integrating from \(0\) to \(T\):</p>
+
+      $$\ln S_T = \ln S_0 + \left(r - \tfrac{1}{2}\sigma^2\right)T + \sigma\widetilde{W}_T$$
+
+      <p>Since \(\widetilde{W}_T \sim \mathcal{N}(0, T)\) under \(\mathbb{Q}\), we can write \(S_T = S_0 \exp\!\left(\left(r - \frac{1}{2}\sigma^2\right)T + \sigma\sqrt{T}\,Z\right)\) where \(Z \sim \mathcal{N}(0,1)\). The stock is <b>log-normally distributed</b> under \(\mathbb{Q}\), and we know exactly what we're integrating against.</p>
+
+      <h2>Step 3: Computing the Expectation</h2>
+
+      <p>The call price is:</p>
+
+      $$C = e^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[(S_T - K)^+\right] = e^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[S_T\,\mathbf{1}_{S_T > K}\right] - Ke^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[\mathbf{1}_{S_T > K}\right]$$
+
+      <p>Call these two terms \(I_1\) and \(I_2\).</p>
+
+      <p><b>\(I_2\): The probability term.</b> The condition \(S_T > K\) translates, via the log-normal expression above, to \(Z > -d_2\) where:</p>
+
+      $$d_2 = \frac{\ln(S_0/K) + \left(r - \frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}$$
+
+      <p>So \(I_2 = \mathbb{Q}(S_T > K) = N(d_2)\). This is the risk-neutral probability that the option expires in the money.</p>
+
+      <p><b>\(I_1\): The stock term.</b> We write out the expectation as a Gaussian integral and complete the square in the exponent. The \(\sigma\sqrt{T}\,z\) from \(S_T\) combines with the \(-z^2/2\) from the normal density to shift the integration variable by \(\sigma\sqrt{T}\), leaving another standard normal CDF:</p>
+
+      $$e^{-rT} I_1 = S_0\, N(d_1), \qquad d_1 = d_2 + \sigma\sqrt{T} = \frac{\ln(S_0/K) + \left(r + \frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}$$
+
+      <p>Putting it together:</p>
+
+      $$\boxed{C = S_0\, N(d_1) - Ke^{-rT} N(d_2)}$$
+
+      <p>That's it.</p>
+
+      <h2>Reading the Formula</h2>
+
+      <p>\(N(d_2)\) is the risk-neutral probability the option finishes in the money — the chance you end up paying \(K\). \(N(d_1)\) is the delta of the option — the number of shares held in the replicating portfolio. It's slightly larger than \(N(d_2)\) because when \(S_T > K\), you receive a stock worth more than \(K\), so the stock leg is weighted upward by the lognormal distribution.</p>
+
+      <p>The formula is really just: <i>(expected value of what you receive)</i> minus <i>(discounted expected cost of what you pay)</i>, both under \(\mathbb{Q}\).</p>
+
+      <h2>Beyond the Call</h2>
+
+      <p>The same approach works for any European-style payoff: change measure, find the distribution, compute the expectation. A digital option paying \(\mathbf{1}_{S_T > K}\) prices immediately as \(e^{-rT}N(d_2)\). A put follows from put-call parity. More exotic derivatives change the payoff function \(h\), complicate the distribution, or require a different numéraire — but the logic is always the same.</p>
+
+      <p>The lasting contribution of Black-Scholes isn't the formula itself. It's the idea that you price derivatives by hedging away the randomness and taking expectations under \(\mathbb{Q}\). That idea still underlies everything in derivatives pricing.</p>

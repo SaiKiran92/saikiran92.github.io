@@ -62,5 +62,20 @@
       "linear algebra"
     ],
     "content": "This post explains the two Fundamental Theorems of Asset Pricing using geometry and linear algebra, avoiding probabilistic machinery. We consider a one-period binomial market with a stock and a risk-free bond. Each traded asset is a vector in payoff space. The price operator assigns a time 0 price to each payoff vector. The First FTAP states: a market admits no arbitrage if and only if there exists a risk-neutral pricing measure. The Second FTAP states: in a complete market there is exactly one risk-neutral pricing measure; in an incomplete market there are many."
+  },
+  {
+    "title": "Deriving the Black-Scholes Formula in 3 Steps",
+    "permalink": "/posts/black-scholes/",
+    "date": "13 Jun 2026",
+    "summary": "A clean derivation of the Black-Scholes formula using the risk-neutral measure, Girsanov's theorem, and Itô's lemma.",
+    "tags": [
+      "black-scholes",
+      "options pricing",
+      "stochastic calculus",
+      "risk-neutral measure",
+      "girsanov",
+      "itos lemma"
+    ],
+    "content": "This post derives the Black-Scholes formula for a European call option in three steps using the risk-neutral pricing framework. Starting from a geometric Brownian motion for the stock price, we apply Girsanov's theorem to change to the risk-neutral measure, use Itô's lemma to find the log-normal distribution of the stock price, and compute the resulting expectation explicitly via a Gaussian integral. The derivation highlights the two key results from stochastic calculus — Girsanov's theorem and Itô's lemma — and shows how the same approach extends to other derivative payoffs."
   }
 ]

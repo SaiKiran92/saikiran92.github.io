@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');}());</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../../style.css">
+  <title>Deriving the Black-Scholes Formula in 3 Steps — Tales of the Fat Tails</title>
+  
+  <meta name="description" content="A clean derivation of the Black-Scholes formula using the risk-neutral measure, Girsanov's theorem, and Itô's lemma." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Tales of the Fat Tails" />
+  <meta property="og:title" content="Deriving the Black-Scholes Formula in 3 Steps" />
+  <meta property="og:description" content="A clean derivation of the Black-Scholes formula using the risk-neutral measure, Girsanov's theorem, and Itô's lemma." />
+  <meta property="og:url" content="https://saikiran92.github.io/posts/black-scholes/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Deriving the Black-Scholes Formula in 3 Steps" />
+  <meta name="twitter:description" content="A clean derivation of the Black-Scholes formula using the risk-neutral measure, Girsanov's theorem, and Itô's lemma." />
+
+  
+</head>
+<body>
+
+  <nav id="nav"></nav>
+
+  
+  <div class="post-layout">
+
+    <aside class="toc-sidebar">
+      <div class="toc-sidebar-title">Contents</div>
+      <ul>
+        
+        <li><a href="#setup">Setup</a></li>
+        
+        <li><a href="#step-1">Step 1: Risk-Neutral Measure</a></li>
+        
+        <li><a href="#step-2">Step 2: Distribution of S_T</a></li>
+        
+        <li><a href="#step-3">Step 3: Computing the Expectation</a></li>
+        
+        <li><a href="#reading-the-formula">Reading the Formula</a></li>
+        
+        <li><a href="#beyond-the-call">Beyond the Call</a></li>
+        
+      </ul>
+    </aside>
+
+    <div class="post-main">
+
+      <div class="post-header">
+        <h1 class="post-title">Deriving the Black-Scholes Formula in 3 Steps</h1>
+        <div class="post-meta">Date: 13 Jun 2026 &nbsp;|&nbsp; 5 min read &nbsp;|&nbsp; Author: Sai Kiran Mayakuntla</div>
+      </div>
+
+      <div class="toc-mobile">
+        <button class="toc-mobile-btn" id="toc-toggle" aria-label="Contents">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="10" y2="18"/></svg>
+        </button>
+        <nav class="toc-mobile-panel" id="toc-panel">
+          <div class="toc-mobile-title">Contents</div>
+          <ul>
+            
+            <li><a href="#setup">Setup</a></li>
+            
+            <li><a href="#step-1">Step 1: Risk-Neutral Measure</a></li>
+            
+            <li><a href="#step-2">Step 2: Distribution of S_T</a></li>
+            
+            <li><a href="#step-3">Step 3: Computing the Expectation</a></li>
+            
+            <li><a href="#reading-the-formula">Reading the Formula</a></li>
+            
+            <li><a href="#beyond-the-call">Beyond the Call</a></li>
+            
+          </ul>
+        </nav>
+      </div>
+
+      <div class="post-body">
+
+              <p><i>"Do you recall the Black-Scholes formula?"</i></p>
+
+      <p>If you've interviewed for a quant role, you've probably heard this. I have. And every time, I think: this is a slightly unfair question. Black-Scholes isn't a formula you can easily carry around in your head. It has six variables, each appearing multiple times, tangled up with an exponential, a logarithm, a square root, and two normal CDFs. Reciting it on demand, under interview pressure, is more a test of nerves than of understanding.</p>
+
+      <p>The derivation, though, is a different story. Given a basic comfort with stochastic calculus, the formula falls out in three steps, almost mechanically. Once you've derived it yourself, you never really need to memorise it again. I think every quant should do this at least once, pen on paper, as a kind of rite of passage.</p>
+
+      <p>This post walks through that derivation.</p>
+
+      <h2>Model Setup</h2>
+
+      <p>The Black-Scholes formula gives us the price of a European call option on an underlying stock. Here, we model the stock price \(S_t\) as a geometric Brownian motion:</p>
+
+      $$dS_t = \mu S_t \, dt + \sigma S_t \, dW_t$$
+
+      <p>\(\mu\) is the drift, \(\sigma > 0\) the volatility, and \(W_t\) a standard Brownian motion. Crucially, we assume the market is <b>arbitrage-free</b>: no riskless profit can be made. The model also assumes no dividends, no transaction costs, continuous trading, and a constant risk-free rate \(r\), though versions of the Black-Scholes formula can be derived where some of these are relaxed.</p>
+
+      <p>The call option pays \(\max(S_T - K, 0)\) at maturity \(T\), where \(K\) is the strike price. Our goal is to find the fair price of this payoff today.</p>
+
+      <h2>Step 1: Change to the Risk-Neutral Measure</h2>
+
+      <p>From the First Fundamental Theorem of Asset Pricing, an arbitrage-free market guarantees the existence of a <b>risk-neutral measure</b> \(\mathbb{Q}\). The SDE above describes the stock price under the real-world measure \(\mathbb{P}\): the distribution you would observe if you watched the stock evolve over time. The risk-neutral measure is different. It is an "imaginary" probability measure, but one under which the price of any derivative can be written simply as a discounted expectation:</p>
+
+      $$V = e^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[h(S_T)\right]$$
+
+      <p>So our task reduces to: find \(\mathbb{Q}\), and compute the expectation. This is where <b>Girsanov's Theorem</b> comes in. It tells us that if we define</p>
+
+      $$\widetilde{W}_t = W_t + \frac{\mu - r}{\sigma}t$$
+
+      <p>then \(\widetilde{W}_t\) is a standard Brownian motion under \(\mathbb{Q}\). The quantity \(\theta = (\mu - r)/\sigma\) is the <i>market price of risk</i>: the excess return per unit of volatility, which gets absorbed into the measure change. Substituting back, the stock price dynamics under \(\mathbb{Q}\) become:</p>
+
+      $$dS_t = r S_t \, dt + \sigma S_t \, d\widetilde{W}_t$$
+
+      <p>The drift \(\mu\) has been replaced by the risk-free rate \(r\). We are now working under \(\mathbb{Q}\).</p>
+
+      <h2>Step 2: The Distribution of \(S_T\) Under \(\mathbb{Q}\)</h2>
+
+      <p>Next, we determine the distribution of \(S_T\). We apply <b>Itô's Lemma</b> to \(f(S_t) = \ln S_t\) — the stochastic chain rule, which unlike the ordinary chain rule picks up an extra \(-\frac{1}{2}\sigma^2 dt\) term from the quadratic variation of the Brownian motion:</p>
+
+      $$d(\ln S_t) = \left(r - \tfrac{1}{2}\sigma^2\right)dt + \sigma \, d\widetilde{W}_t$$
+
+      <p>Integrating from \(0\) to \(T\):</p>
+
+      $$\ln S_T = \ln S_0 + \left(r - \tfrac{1}{2}\sigma^2\right)T + \sigma\widetilde{W}_T$$
+
+      <p>Since \(\widetilde{W}_T \sim \mathcal{N}(0, T)\) under \(\mathbb{Q}\), we can write \(S_T = S_0 \exp\!\left(\left(r - \frac{1}{2}\sigma^2\right)T + \sigma\sqrt{T}\,Z\right)\) where \(Z \sim \mathcal{N}(0,1)\). The stock is <b>log-normally distributed</b> under \(\mathbb{Q}\), and we know exactly what we're integrating against.</p>
+
+      <h2>Step 3: Computing the Expectation</h2>
+
+      <p>The call price is:</p>
+
+      $$C = e^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[(S_T - K)^+\right] = e^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[S_T\,\mathbf{1}_{S_T > K}\right] - Ke^{-rT}\,\mathbb{E}^{\mathbb{Q}}\!\left[\mathbf{1}_{S_T > K}\right]$$
+
+      <p>Call these two terms \(I_1\) and \(I_2\).</p>
+
+      <p><b>\(I_2\): The probability term.</b> The condition \(S_T > K\) translates, via the log-normal expression above, to \(Z > -d_2\) where:</p>
+
+      $$d_2 = \frac{\ln(S_0/K) + \left(r - \frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}$$
+
+      <p>So \(I_2 = \mathbb{Q}(S_T > K) = N(d_2)\). This is the risk-neutral probability that the option expires in the money.</p>
+
+      <p><b>\(I_1\): The stock term.</b> We write out the expectation as a Gaussian integral and complete the square in the exponent. The \(\sigma\sqrt{T}\,z\) from \(S_T\) combines with the \(-z^2/2\) from the normal density to shift the integration variable by \(\sigma\sqrt{T}\), leaving another standard normal CDF:</p>
+
+      $$e^{-rT} I_1 = S_0\, N(d_1), \qquad d_1 = d_2 + \sigma\sqrt{T} = \frac{\ln(S_0/K) + \left(r + \frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}$$
+
+      <p>Putting it together:</p>
+
+      $$\boxed{C = S_0\, N(d_1) - Ke^{-rT} N(d_2)}$$
+
+      <p>That's it.</p>
+
+      <h2>Reading the Formula</h2>
+
+      <p>\(N(d_2)\) is the risk-neutral probability the option finishes in the money — the chance you end up paying \(K\). \(N(d_1)\) is the delta of the option — the number of shares held in the replicating portfolio. It's slightly larger than \(N(d_2)\) because when \(S_T > K\), you receive a stock worth more than \(K\), so the stock leg is weighted upward by the lognormal distribution.</p>
+
+      <p>The formula is really just: <i>(expected value of what you receive)</i> minus <i>(discounted expected cost of what you pay)</i>, both under \(\mathbb{Q}\).</p>
+
+      <h2>Beyond the Call</h2>
+
+      <p>The same approach works for any European-style payoff: change measure, find the distribution, compute the expectation. A digital option paying \(\mathbf{1}_{S_T > K}\) prices immediately as \(e^{-rT}N(d_2)\). A put follows from put-call parity. More exotic derivatives change the payoff function \(h\), complicate the distribution, or require a different numéraire — but the logic is always the same.</p>
+
+      <p>The lasting contribution of Black-Scholes isn't the formula itself. It's the idea that you price derivatives by hedging away the randomness and taking expectations under \(\mathbb{Q}\). That idea still underlies everything in derivatives pricing.</p>
+
+        <nav class="post-nav">
+          
+          <a class="post-nav-prev" href="/posts/fundamental-theorems-asset-pricing/">
+            <span class="post-nav-label">← Previous</span>
+            <span class="post-nav-title">The Fundamental Theorems of Asset Pricing: A Geometric Explanation</span>
+          </a>
+          
+          
+        </nav>
+
+        <div class="share-links">
+          <!-- Twitter/X -->
+          <a id="share-twitter" target="_blank" rel="noopener" title="Share on Twitter / X">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.257 5.629 5.907-5.629Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- LinkedIn -->
+          <a id="share-linkedin" target="_blank" rel="noopener" title="Share on LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <!-- Reddit -->
+          <a id="share-reddit" target="_blank" rel="noopener" title="Share on Reddit">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a id="share-facebook" target="_blank" rel="noopener" title="Share on Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <button id="share-copy" title="Copy link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <footer>© 2026 Sai Kiran Mayakuntla</footer>
+
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  
+  <script defer src="../../main.js"></script>
+  
+
+</body>
+</html>
