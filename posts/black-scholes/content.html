@@ -42,7 +42,7 @@
         <li><b>Step 3: Compute the option price</b> — We take the expectation under \(\mathbb{Q}\) of the future payoff discounted at a constant risk-free rate \(r\), which reduces to a Gaussian integral.</li>
       </ul>
 
-      <h2 id="step-1">Step 1: Change of measure from \(\mathbb{P}\) to \(\mathbb{Q}\)</h2>
+      <h3 id="step-1">Step 1: Change of measure from \(\mathbb{P}\) to \(\mathbb{Q}\)</h3>
 
       <p>Girsanov's theorem tells us that we can switch from \(\mathbb{P}\) to \(\mathbb{Q}\) by absorbing the market price of risk \(\theta = (\mu - r)/\sigma\) into the Brownian motion. Specifically, under \(\mathbb{Q}\), the following is a standard Brownian motion:</p>
 
@@ -54,7 +54,7 @@
 
       <p>The drift \(\mu\) has been replaced by \(r\). We are now working under \(\mathbb{Q}\).</p>
 
-      <h2 id="step-2">Step 2: Find the distribution of \(S_T\) under \(\mathbb{Q}\)</h2>
+      <h3 id="step-2">Step 2: Find the distribution of \(S_T\) under \(\mathbb{Q}\)</h3>
 
       <p>We apply Itô's lemma to \(f(S_t) = \ln S_t\). Unlike the ordinary chain rule, Itô's lemma picks up an extra term (\(-\frac{1}{2}\sigma^2 \, dt\)) from the quadratic variation of the Brownian motion:</p>
 
@@ -70,7 +70,7 @@
 
       <p>where \(Z \sim \mathcal{N}(0,1)\). Thus, the stock price at maturity is log-normally distributed under \(\mathbb{Q}\).</p>
 
-      <h2 id="step-3">Step 3: Compute the option price</h2>
+      <h3 id="step-3">Step 3: Compute the option price</h3>
 
       <p>The call option price is the expectation of the discounted payoff under \(\mathbb{Q}\). With a constant risk-free rate \(r\), we have:</p>
 
