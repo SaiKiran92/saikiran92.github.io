@@ -1,4 +1,4 @@
-title: "Deriving the Black-Scholes Formula in 3 Steps"
+title: "Deriving the Black-Scholes Formula in 3 Simple Steps"
 date: "13 Jun 2026"
 date_iso: "2026-06-13"
 description: "A clean derivation of the Black-Scholes formula using the risk-neutral measure, Girsanov's theorem, and Itô's lemma."
@@ -11,10 +11,11 @@ tags:
   - girsanov
   - itos lemma
 toc:
-  - {id: setup, label: "Setup"}
-  - {id: step-1, label: "Step 1: Risk-Neutral Measure"}
+  - {id: setup, label: "The Setup"}
+  - {id: the-trick, label: "The Trick"}
+  - {id: the-derivation, label: "The Derivation"}
+  - {id: step-1, label: "Step 1: Change of Measure"}
   - {id: step-2, label: "Step 2: Distribution of S_T"}
-  - {id: step-3, label: "Step 3: Computing the Expectation"}
-  - {id: reading-the-formula, label: "Reading the Formula"}
-  - {id: beyond-the-call, label: "Beyond the Call"}
+  - {id: step-3, label: "Step 3: Compute the Option Price"}
+  - {id: beyond-black-scholes, label: "Beyond Black-Scholes"}
 search_content: "This post derives the Black-Scholes formula for a European call option in three steps using the risk-neutral pricing framework. Starting from a geometric Brownian motion for the stock price, we apply Girsanov's theorem to change to the risk-neutral measure, use Itô's lemma to find the log-normal distribution of the stock price, and compute the resulting expectation explicitly via a Gaussian integral. The derivation highlights the two key results from stochastic calculus — Girsanov's theorem and Itô's lemma — and shows how the same approach extends to other derivative payoffs."

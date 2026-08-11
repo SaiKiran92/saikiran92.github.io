@@ -64,7 +64,7 @@
     "content": "This post explains the two Fundamental Theorems of Asset Pricing using geometry and linear algebra, avoiding probabilistic machinery. We consider a one-period binomial market with a stock and a risk-free bond. Each traded asset is a vector in payoff space. The price operator assigns a time 0 price to each payoff vector. The First FTAP states: a market admits no arbitrage if and only if there exists a risk-neutral pricing measure. The Second FTAP states: in a complete market there is exactly one risk-neutral pricing measure; in an incomplete market there are many."
   },
   {
-    "title": "Deriving the Black-Scholes Formula in 3 Steps",
+    "title": "Deriving the Black-Scholes Formula in 3 Simple Steps",
     "permalink": "/posts/black-scholes/",
     "date": "13 Jun 2026",
     "summary": "A clean derivation of the Black-Scholes formula using the risk-neutral measure, Girsanov's theorem, and Itô's lemma.",
